@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gustavo B.</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <canvas id="choreographer"></canvas>
+
+    <div class="language-switcher">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="pt">PT</button>
+        <button class="lang-btn" data-lang="zh">中文</button>
+        <button class="lang-btn" data-lang="ja">日本語</button>
+    </div>
+
+    <main class="scroll-container">
+        <section id="home" class="snap-section">
+            <header class="glass-card">
+                <img src="assets/images/self.jpeg" alt="Profile Avatar" class="profile-avatar">
+                <h1>Gustavo B.</h1>
+                <p class="tagline" data-i18n="role">Software Engineer</p>
+
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/eternyte/" target="_blank" class="social-btn"
+                        aria-label="LinkedIn">
+                        <img src="assets/images/linkedin.svg" alt="LinkedIn">
+                    </a>
+                    <a href="https://github.com/Staminax" target="_blank" class="social-btn" aria-label="GitHub">
+                        <img src="assets/images/github.svg" alt="GitHub">
+                    </a>
+                    <a href="mailto:imgustavobc@hotmail.com" class="social-btn" aria-label="Email">
+                        <img src="assets/images/email.svg" alt="Email">
+                    </a>
+                </div>
+            </header>
+            <a href="#about" class="social-btn scroll-btn" aria-label="Scroll Down">
+                <img src="assets/images/arrow-down.svg" alt="Scroll Down">
+            </a>
+        </section>
+
+        <section id="about" class="snap-section">
+            <div class="glass-card about-card">
+                <h2 data-i18n="currentRoleTitle">Current Role</h2>
+                <h3 data-i18n="currentRole">Senior Mobile Engineer</h3>
+                <p class="job-description" data-i18n="aboutText">
+                    Currently leading the development of immersive, high-performance mobile applications.
+                    I specialize in creating intuitive user experiences for iOS and Android,
+                    using modern technologies to build scalable and robust solutions.
+                    I am dedicated to bridging the gap between design and engineering to
+                    deliver polished, market-ready products.
+                </p>
+
+                <div class="skills-list"></div>
+            </div>
+        </section>
+    </main>
+
+    <a href="#" class="social-btn scroll-up-btn hidden" aria-label="Scroll Up">
+        <img src="assets/images/arrow-up.svg" alt="Scroll Up">
+    </a>
+
+    <script src="assets/i18n/translations.js"></script>
+    <script src="assets/i18n/i18n.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
