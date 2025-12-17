@@ -33,7 +33,13 @@
     --cursor-trail: rgba(0, 0, 0, 0.8);
     --cursor-hover: rgba(255, 0, 0, 0.9);
     --branch-base: #6e6e73;
+    --branch-base: #6e6e73;
     --branch-hover: #1d1d1f;
+}
+
+[data-theme="light"] .social-btn img {
+    filter: invert(1);
+    opacity: 0.8;
 }
 
 * {
@@ -54,6 +60,17 @@ body {
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
+}
+
+a,
+button,
+input,
+textarea,
+.scroll-btn,
+.social-btn,
+.lang-btn,
+.theme-toggle {
+    cursor: none !important;
 }
 
 #choreographer {

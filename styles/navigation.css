@@ -1,0 +1,22 @@
+.nav-buttons-row {
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+    position: absolute;
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+    pointer-events: none;
+}
+
+.nav-buttons-row .scroll-btn {
+    pointer-events: auto;
+    position: relative !important;
+    transform: none !important;
+    left: auto !important;
+    bottom: auto !important;
+    top: auto !important;
+    right: auto !important;
+    margin: 0 !important;
+}

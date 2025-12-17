@@ -66,8 +66,8 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 80px;
-    height: 80px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     background: radial-gradient(circle, rgba(255, 100, 100, 0.15) 0%, rgba(255, 0, 0, 0.1) 50%, rgba(200, 0, 0, 0.05) 100%);
     box-shadow:

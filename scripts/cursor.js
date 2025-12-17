@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const uiSelector = 'a, button, .social-btn, .lang-btn, .scroll-btn, .social-links, .language-switcher';
 
     if (!trailCanvas) {
-        console.error('Cursor trail canvas not found!');
         return;
     }
 
@@ -48,13 +47,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target.closest(uiSelector)) {
             isOverUI = true;
             if (cursorEye) cursorEye.classList.add('active');
+            if (cursorDot) cursorDot.style.opacity = '0';
         }
     });
 
     document.addEventListener('mouseout', (e) => {
         if (e.target.closest(uiSelector)) {
-            isOverUI = false;
-            if (cursorEye) cursorEye.classList.remove('active');
+            if (!e.relatedTarget || !e.relatedTarget.closest(uiSelector)) {
+                isOverUI = false;
+                if (cursorEye) cursorEye.classList.remove('active');
+                if (cursorDot) cursorDot.style.opacity = '1';
+            }
         }
     });
 

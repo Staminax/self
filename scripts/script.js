@@ -8,7 +8,7 @@ function resizeCanvas() {
     generateAllBranches();
 }
 
-let seed = 12345;
+let seed = 1337;
 function seededRandom() {
     seed = (seed * 9301 + 49297) % 233280;
     return seed / 233280;
@@ -232,12 +232,13 @@ const observer = new IntersectionObserver((entries) => {
             const index = Array.from(sections).indexOf(entry.target);
             if (index !== -1) {
                 currentSectionIndex = index;
+                updateNavigation(index, sections.length);
             }
 
             generateAllBranches();
 
             if (window.innerWidth > 768) {
-                if (entry.target.id === 'home') {
+                if (entry.target.id === 'home' || entry.target.id === 'about') {
                     upBtn?.classList.add('hidden');
                 } else {
                     upBtn?.classList.remove('hidden');
@@ -343,20 +344,52 @@ window.addEventListener('keydown', (e) => {
     }
 });
 
-if (upBtn) {
-    upBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        scrollToSection(currentSectionIndex - 1);
+function updateNavigation(currentIndex, totalSections) {
+    document.querySelectorAll('.nav-buttons-row, .scroll-btn').forEach(el => {
+        if (!el.closest('.social-links')) {
+            el.remove();
+        }
     });
+
+    const currentSection = sections[currentIndex];
+
+    const navContainer = document.createElement('div');
+    navContainer.className = 'nav-buttons-row';
+
+    const showUp = currentIndex > 0;
+    const showDown = currentIndex < totalSections - 1;
+
+    if (showUp) {
+        const upBtn = document.createElement('a');
+        upBtn.href = '#';
+        upBtn.className = 'social-btn scroll-btn';
+        upBtn.setAttribute('aria-label', 'Scroll Up');
+        upBtn.innerHTML = '<img src="assets/arrow-up.svg" alt="Scroll Up">';
+        upBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            scrollToSection(currentIndex - 1);
+        });
+        navContainer.appendChild(upBtn);
+    }
+
+    if (showDown) {
+        const downBtn = document.createElement('a');
+        downBtn.href = '#';
+        downBtn.className = 'social-btn scroll-btn';
+        downBtn.setAttribute('aria-label', 'Scroll Down');
+        downBtn.innerHTML = '<img src="assets/arrow-down.svg" alt="Scroll Down">';
+        downBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            scrollToSection(currentIndex + 1);
+        });
+        navContainer.appendChild(downBtn);
+    }
+
+
+    currentSection.appendChild(navContainer);
 }
 
-const downBtn = document.querySelector('.scroll-btn');
-if (downBtn) {
-    downBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        scrollToSection(currentSectionIndex + 1);
-    });
-}
+updateNavigation(0, sections.length);
 
 const scrollContainer = document.querySelector('.scroll-container');
 if (scrollContainer) {
