@@ -1,0 +1,87 @@
+.theme-toggle {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: transparent;
+    overflow: hidden;
+    box-shadow: 0 6px 6px rgba(0, 0, 0, 0.2), 0 0 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-toggle::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    z-index: 0;
+    backdrop-filter: blur(4px) saturate(120%) brightness(1.15);
+    -webkit-backdrop-filter: blur(4px) saturate(120%) brightness(1.15);
+    background: transparent;
+}
+
+.theme-toggle::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    z-index: 1;
+    box-shadow: inset 1px 1px 0 var(--glass-highlight),
+        inset 0 0 5px var(--glass-highlight);
+    pointer-events: none;
+}
+
+.theme-toggle .theme-icon {
+    width: 24px;
+    height: 24px;
+    position: relative;
+    z-index: 2;
+    filter: invert(1);
+    transition: transform 0.3s ease;
+}
+
+[data-theme="light"] .theme-toggle .theme-icon {
+    filter: invert(0);
+}
+
+.theme-toggle:hover {
+    transform: scale(1.1);
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.3),
+        0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+.theme-toggle.animating {
+    animation: themeChange 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes themeChange {
+    0% {
+        transform: scale(1) rotate(0deg);
+    }
+
+    50% {
+        transform: scale(0.8) rotate(180deg);
+    }
+
+    100% {
+        transform: scale(1) rotate(360deg);
+    }
+}
+
+@media (max-width: 768px) {
+    .theme-toggle {
+        width: 44px;
+        height: 44px;
+    }
+
+    .theme-toggle .theme-icon {
+        width: 20px;
+        height: 20px;
+    }
+}

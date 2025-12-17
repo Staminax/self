@@ -5,41 +5,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gustavo B.</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/cursor.css">
+    <link rel="stylesheet" href="styles/theme-toggle.css">
 </head>
 
 <body>
     <canvas id="choreographer"></canvas>
+    <canvas id="cursor-trail"></canvas>
+    <div id="cursor-dot"></div>
+    <div id="cursor-eye">
+        <canvas id="cursor-branches"></canvas>
+    </div>
 
     <div class="language-switcher">
         <button class="lang-btn active" data-lang="en">EN</button>
         <button class="lang-btn" data-lang="pt">PT</button>
         <button class="lang-btn" data-lang="zh">中文</button>
         <button class="lang-btn" data-lang="ja">日本語</button>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+            <img src="assets/sun.svg" alt="Toggle theme" class="theme-icon">
+        </button>
     </div>
 
     <main class="scroll-container">
         <section id="home" class="snap-section">
             <header class="glass-card">
-                <img src="assets/images/self.jpeg" alt="Profile Avatar" class="profile-avatar">
+                <img src="assets/self.jpeg" alt="Profile Avatar" class="profile-avatar">
                 <h1>Gustavo B.</h1>
                 <p class="tagline" data-i18n="role">Software Engineer</p>
 
                 <div class="social-links">
                     <a href="https://www.linkedin.com/in/eternyte/" target="_blank" class="social-btn"
                         aria-label="LinkedIn">
-                        <img src="assets/images/linkedin.svg" alt="LinkedIn">
+                        <img src="assets/linkedin.svg" alt="LinkedIn">
                     </a>
                     <a href="https://github.com/Staminax" target="_blank" class="social-btn" aria-label="GitHub">
-                        <img src="assets/images/github.svg" alt="GitHub">
+                        <img src="assets/github.svg" alt="GitHub">
                     </a>
                     <a href="mailto:imgustavobc@hotmail.com" class="social-btn" aria-label="Email">
-                        <img src="assets/images/email.svg" alt="Email">
+                        <img src="assets/email.svg" alt="Email">
                     </a>
                 </div>
             </header>
             <a href="#about" class="social-btn scroll-btn" aria-label="Scroll Down">
-                <img src="assets/images/arrow-down.svg" alt="Scroll Down">
+                <img src="assets/arrow-down.svg" alt="Scroll Down">
             </a>
         </section>
 
@@ -61,12 +72,15 @@
     </main>
 
     <a href="#" class="social-btn scroll-up-btn hidden" aria-label="Scroll Up">
-        <img src="assets/images/arrow-up.svg" alt="Scroll Up">
+        <img src="assets/arrow-up.svg" alt="Scroll Up">
     </a>
 
-    <script src="assets/i18n/translations.js"></script>
-    <script src="assets/i18n/i18n.js"></script>
-    <script src="script.js"></script>
+    <script src="i18n/translations.js"></script>
+    <script src="i18n/i18n.js"></script>
+    <script src="scripts/theme.js"></script>
+    <script src="scripts/avatar-3d.js"></script>
+    <script src="scripts/script.js"></script>
+    <script src="scripts/cursor.js"></script>
 </body>
 
 </html>
