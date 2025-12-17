@@ -1,18 +1,29 @@
 @media (max-width: 768px) {
     .cursor-trail {
-        display: none;
+        display: none !important;
     }
 
     #cursor-bubble {
-        display: none;
+        display: none !important;
     }
 
     #cursor-eye {
-        display: none;
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+        transform: scale(0) !important;
     }
 
     body {
-        cursor: auto;
+        cursor: none !important;
+    }
+
+    *,
+    *:hover,
+    *:active,
+    *:focus {
+        cursor: none !important;
     }
 }
 

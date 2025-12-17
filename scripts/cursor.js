@@ -4,6 +4,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const cursorEye = document.getElementById('cursor-eye');
     const uiSelector = 'a, button, .social-btn, .lang-btn, .scroll-btn, .social-links, .language-switcher';
 
+    if (window.matchMedia('(max-width: 768px)').matches || 'ontouchstart' in window) {
+        if (cursorDot) cursorDot.style.display = 'none';
+        if (cursorEye) cursorEye.style.display = 'none';
+        if (trailCanvas) trailCanvas.style.display = 'none';
+        return;
+    }
+
     if (!trailCanvas) {
         return;
     }
