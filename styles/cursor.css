@@ -26,6 +26,10 @@
     .skill-tag {
         cursor: none !important;
     }
+
+    .cats-trigger {
+        cursor: pointer !important;
+    }
 }
 
 #cursor-trail {

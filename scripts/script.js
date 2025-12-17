@@ -364,7 +364,7 @@ function updateNavigation(currentIndex, totalSections) {
         upBtn.href = '#';
         upBtn.className = 'social-btn scroll-btn';
         upBtn.setAttribute('aria-label', 'Scroll Up');
-        upBtn.innerHTML = '<img src="assets/arrow-up.svg" alt="Scroll Up">';
+        upBtn.innerHTML = '<img src="assets/images/arrow-up.svg" alt="Scroll Up">';
         upBtn.addEventListener('click', (e) => {
             e.preventDefault();
             scrollToSection(currentIndex - 1);
@@ -377,7 +377,7 @@ function updateNavigation(currentIndex, totalSections) {
         downBtn.href = '#';
         downBtn.className = 'social-btn scroll-btn';
         downBtn.setAttribute('aria-label', 'Scroll Down');
-        downBtn.innerHTML = '<img src="assets/arrow-down.svg" alt="Scroll Down">';
+        downBtn.innerHTML = '<img src="assets/images/arrow-down.svg" alt="Scroll Down">';
         downBtn.addEventListener('click', (e) => {
             e.preventDefault();
             scrollToSection(currentIndex + 1);

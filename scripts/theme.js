@@ -8,10 +8,10 @@ updateThemeIcon(savedTheme);
 
 function updateThemeIcon(theme) {
     if (theme === 'light') {
-        themeIcon.src = 'assets/moon.svg';
+        themeIcon.src = 'assets/images/moon.svg';
         themeIcon.alt = 'Switch to dark mode';
     } else {
-        themeIcon.src = 'assets/sun.svg';
+        themeIcon.src = 'assets/images/sun.svg';
         themeIcon.alt = 'Switch to light mode';
     }
 }

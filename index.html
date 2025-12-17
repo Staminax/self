@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gustavo B.</title>
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Didact+Gothic&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/cursor.css">
     <link rel="stylesheet" href="styles/theme-toggle.css">
@@ -26,27 +27,27 @@
         <button class="lang-btn" data-lang="zh">中文</button>
         <button class="lang-btn" data-lang="ja">日本語</button>
         <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
-            <img src="assets/sun.svg" alt="Toggle theme" class="theme-icon">
+            <img src="assets/images/sun.svg" alt="Toggle theme" class="theme-icon">
         </button>
     </div>
 
     <main class="scroll-container">
         <section id="home" class="snap-section">
             <header class="glass-card">
-                <img src="assets/self.jpeg" alt="Profile Avatar" class="profile-avatar">
+                <img src="assets/images/self.jpeg" alt="Profile Picture" class="profile-avatar">
                 <h1>Gustavo B.</h1>
                 <p class="tagline" data-i18n="role">Software Engineer</p>
 
                 <div class="social-links">
                     <a href="https://www.linkedin.com/in/eternyte/" target="_blank" class="social-btn"
                         aria-label="LinkedIn">
-                        <img src="assets/linkedin.svg" alt="LinkedIn">
+                        <img src="assets/images/linkedin.svg" alt="LinkedIn">
                     </a>
                     <a href="https://github.com/Staminax" target="_blank" class="social-btn" aria-label="GitHub">
-                        <img src="assets/github.svg" alt="GitHub">
+                        <img src="assets/images/github.svg" alt="GitHub">
                     </a>
                     <a href="mailto:imgustavobc@hotmail.com" class="social-btn" aria-label="Email">
-                        <img src="assets/email.svg" alt="Email">
+                        <img src="assets/images/email.svg" alt="Email">
                     </a>
                 </div>
             </header>
@@ -76,24 +77,40 @@
                     <br><br>
                     My personal interests vary from multiple related fields in tech to design, photography, fashion and
                     films.
-                    <br><br>
-                    I love cats.
-                    <br><br>
-                    Here are some personal links
-                <div class="social-links">
-                    <a href="https://open.spotify.com/user/imgustavobc?si=26f4999e648c4940" target="_blank"
-                        class="social-btn" aria-label="Spotify">
-                        <img src="assets/spotify.svg" alt="Spotify">
-                    </a>
-                    <a href="https://letterboxd.com/eternyte/" target="_blank" class="social-btn"
-                        aria-label="Letterboxd">
-                        <img src="assets/letterboxd.svg" alt="Letterboxd">
-                    </a>
-                </div>
                 </p>
+                <div class="cats-container">
+                    <p><span data-i18n="catsText">I love <strong class="cats-trigger">cats.</strong></span></p>
+                </div>
             </div>
         </section>
     </main>
+
+    <div id="cat-modal" class="modal-overlay">
+        <div class="modal-content glass-card">
+            <button class="modal-close" aria-label="Close modal">×</button>
+            <div id="cardContainer">
+                <div class="card-title-container">
+                    <h1 id="cardTitle">Loading...</h1>
+                    <img id="cardType" src="" alt="Type">
+                </div>
+                <div class="card-stars">
+                </div>
+                <div class="card-image">
+                    <img src="" alt="Cat">
+                </div>
+                <div class="card-info">
+                    <h4 id="monsterType">[Loading...]</h4>
+                    <p id="monsterDescription">Loading card data...</p>
+                </div>
+                <div class="card-stats">
+                    <span class="stat-label">ATK/</span>
+                    <span class="stat-value">0</span>
+                    <span class="stat-label">DEF/</span>
+                    <span class="stat-value">0</span>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="i18n/translations.js"></script>
     <script src="i18n/i18n.js"></script>
@@ -101,6 +118,9 @@
     <script src="scripts/avatar-3d.js"></script>
     <script src="scripts/script.js"></script>
     <script src="scripts/cursor.js"></script>
+    <script src="scripts/cat-cards.js"></script>
+    <script src="scripts/modal.js"></script>
+    <script src="scripts/card-3d.js"></script>
 </body>
 
 </html>

@@ -1,0 +1,314 @@
+{
+  "cards": [
+    {
+      "id": 1,
+      "image": "assets/cats/1.jpg",
+      "title": "Mystic Feline",
+      "stars": 5,
+      "type": "Beast / Effect",
+      "description": "A mysterious cat with extraordinary powers. When this card is summoned, all opponents must pet it immediately or lose 500 life points.",
+      "atk": 2400,
+      "def": 1800
+    },
+    {
+      "id": 2,
+      "image": "assets/cats/2.jpeg",
+      "title": "Loaf Master",
+      "stars": 3,
+      "type": "Beast / Normal",
+      "description": "This cat has mastered the ancient art of loafing. Its perfect bread-like form grants it immunity to all vacuum cleaner attacks.",
+      "atk": 1200,
+      "def": 2000
+    },
+    {
+      "id": 3,
+      "image": "assets/cats/3.jpeg",
+      "title": "Void Gazer",
+      "stars": 7,
+      "type": "Fiend / Effect",
+      "description": "Stares into the void at 3 AM. When this card attacks, your opponent must explain what they're doing up so late.",
+      "atk": 2800,
+      "def": 1500
+    },
+    {
+      "id": 4,
+      "image": "assets/cats/4.jpg",
+      "title": "Chonky Overlord",
+      "stars": 8,
+      "type": "Beast-Warrior / Effect",
+      "description": "An absolute unit. This card cannot be destroyed by diet-related card effects. Gains 500 ATK for each treat in your hand.",
+      "atk": 3200,
+      "def": 2800
+    },
+    {
+      "id": 5,
+      "image": "assets/cats/5.jpg",
+      "title": "Sleepy Sage",
+      "stars": 2,
+      "type": "Spellcaster / Effect",
+      "description": "Sleeps 23 hours a day. During your opponent's turn, this card cannot be targeted because it's napping.",
+      "atk": 800,
+      "def": 1600
+    },
+    {
+      "id": 6,
+      "image": "assets/cats/6.jpg",
+      "title": "Zoomie Demon",
+      "stars": 6,
+      "type": "Beast / Effect",
+      "description": "Gets the zoomies at exactly 2 AM. This card can attack twice per turn but must run in random directions.",
+      "atk": 2200,
+      "def": 1000
+    },
+    {
+      "id": 7,
+      "image": "assets/cats/7.jpg",
+      "title": "Box Dweller",
+      "stars": 4,
+      "type": "Beast / Normal",
+      "description": "If it fits, it sits. This card gains 1000 DEF when placed in Defense Position inside a cardboard box.",
+      "atk": 1500,
+      "def": 2200
+    },
+    {
+      "id": 8,
+      "image": "assets/cats/8.jpg",
+      "title": "Judgmental Floof",
+      "stars": 5,
+      "type": "Fairy / Effect",
+      "description": "Silently judges all your life choices. Your opponent must discard 1 card while making eye contact with this card.",
+      "atk": 1900,
+      "def": 2100
+    },
+    {
+      "id": 9,
+      "image": "assets/cats/9.jpg",
+      "title": "Keyboard Warrior",
+      "stars": 3,
+      "type": "Machine / Effect",
+      "description": "Sits on your keyboard during important meetings. This card prevents your opponent from activating Spell Cards.",
+      "atk": 1400,
+      "def": 1200
+    },
+    {
+      "id": 10,
+      "image": "assets/cats/10.jpg",
+      "title": "Liquid Cat",
+      "stars": 4,
+      "type": "Aqua / Effect",
+      "description": "Cats are liquid. This card can fit into any container regardless of size. Cannot be destroyed by physical attacks.",
+      "atk": 1600,
+      "def": 1800
+    },
+    {
+      "id": 11,
+      "image": "assets/cats/11.jpeg",
+      "title": "Toe Bean Assassin",
+      "stars": 6,
+      "type": "Warrior / Effect",
+      "description": "Silent but deadly. When this card attacks directly, your opponent must acknowledge how cute its toe beans are.",
+      "atk": 2400,
+      "def": 1600
+    },
+    {
+      "id": 12,
+      "image": "assets/cats/12.jpg",
+      "title": "Derp Knight",
+      "stars": 2,
+      "type": "Beast / Normal",
+      "description": "Not a single thought behind those eyes. This card is immune to mind-control effects because there's nothing to control.",
+      "atk": 1000,
+      "def": 1000
+    },
+    {
+      "id": 13,
+      "image": "assets/cats/13.jpg",
+      "title": "Blep Mage",
+      "stars": 3,
+      "type": "Spellcaster / Effect",
+      "description": "Forgot to put its tongue back in. When summoned, all players must say 'blep' or take 300 damage.",
+      "atk": 1300,
+      "def": 1500
+    },
+    {
+      "id": 14,
+      "image": "assets/cats/14.jpeg",
+      "title": "Grumpy Guardian",
+      "stars": 7,
+      "type": "Rock / Effect",
+      "description": "Permanently annoyed at everything. This card gains 500 ATK for each card your opponent plays because it's just more stuff to be mad about.",
+      "atk": 2600,
+      "def": 2400
+    },
+    {
+      "id": 15,
+      "image": "assets/cats/15.jpeg",
+      "title": "Biscuit Baker",
+      "stars": 4,
+      "type": "Beast / Effect",
+      "description": "Makes biscuits on your lap at 5 AM. When this card is in Attack Position, it kneads your life points back by 500.",
+      "atk": 1700,
+      "def": 1900
+    },
+    {
+      "id": 16,
+      "image": "assets/cats/16.jpg",
+      "title": "Ceiling Cat",
+      "stars": 9,
+      "type": "Divine-Beast / Effect",
+      "description": "Watches you from above. This card cannot be targeted by card effects because it's in the ceiling watching you.",
+      "atk": 3500,
+      "def": 2000
+    },
+    {
+      "id": 17,
+      "image": "assets/cats/17.jpeg",
+      "title": "Purr Engine",
+      "stars": 5,
+      "type": "Machine / Effect",
+      "description": "Purrs so loud it vibrates the entire house. All Beast-Type monsters gain 300 ATK from the good vibes.",
+      "atk": 2000,
+      "def": 1700
+    },
+    {
+      "id": 18,
+      "image": "assets/cats/18.jpg",
+      "title": "Majestic Fluffball",
+      "stars": 10,
+      "type": "Divine-Beast / Effect",
+      "description": "The fluffiest of all cats. This card requires 3 tributes to summon but is worth it because look at all that fluff.",
+      "atk": 4000,
+      "def": 3000
+    },
+    {
+      "id": 19,
+      "image": "assets/cats/19.jpeg",
+      "title": "Sassy Striker",
+      "stars": 6,
+      "type": "Beast-Warrior / Effect",
+      "description": "Knocks things off tables for fun. Once per turn, you can destroy 1 card on your opponent's field by pushing it off.",
+      "atk": 2300,
+      "def": 1400
+    },
+    {
+      "id": 20,
+      "image": "assets/cats/20.jpg",
+      "title": "Nap Champion",
+      "stars": 1,
+      "type": "Beast / Normal",
+      "description": "Professional sleeper. This card is always in Defense Position and cannot change its battle position.",
+      "atk": 500,
+      "def": 2500
+    },
+    {
+      "id": 21,
+      "image": "assets/cats/21.jpeg",
+      "title": "Chaos Goblin",
+      "stars": 8,
+      "type": "Fiend / Effect",
+      "description": "Pure chaos energy. At the start of each turn, flip a coin. If heads, this card attacks. If tails, it knocks over your water glass.",
+      "atk": 3000,
+      "def": 1200
+    },
+    {
+      "id": 22,
+      "image": "assets/cats/22.jpg",
+      "title": "Tiny Terror",
+      "stars": 2,
+      "type": "Beast / Effect",
+      "description": "Smol but fierce. Despite its low stats, this card can attack monsters with 2000 or more ATK and win through sheer audacity.",
+      "atk": 900,
+      "def": 700
+    },
+    {
+      "id": 23,
+      "image": "assets/cats/23.jpg",
+      "title": "Elegant Noble",
+      "stars": 7,
+      "type": "Fairy / Effect",
+      "description": "Too fancy for your peasant food. This card can only be summoned if you control no other monsters because it demands to be the center of attention.",
+      "atk": 2700,
+      "def": 2200
+    },
+    {
+      "id": 24,
+      "image": "assets/cats/24.jpg",
+      "title": "Blanket Thief",
+      "stars": 5,
+      "type": "Beast / Effect",
+      "description": "Steals all the blankets at night. When this card is summoned, your opponent must give you 1 card from their hand (the blanket).",
+      "atk": 2100,
+      "def": 1900
+    },
+    {
+      "id": 25,
+      "image": "assets/cats/25.jpg",
+      "title": "Sunbeam Seeker",
+      "stars": 3,
+      "type": "Fairy / Normal",
+      "description": "Follows the sunbeam around the house all day. This card gains 200 ATK during your opponent's turn because it found the perfect sunny spot.",
+      "atk": 1100,
+      "def": 1400
+    },
+    {
+      "id": 26,
+      "image": "assets/cats/26.jpeg",
+      "title": "Screamy Boi",
+      "stars": 4,
+      "type": "Thunder / Effect",
+      "description": "Yells at nothing at 4 AM. When this card is summoned, both players must cover their ears or take 400 damage.",
+      "atk": 1800,
+      "def": 1300
+    },
+    {
+      "id": 27,
+      "image": "assets/cats/27.jpg",
+      "title": "Paw Patrol",
+      "stars": 6,
+      "type": "Warrior / Effect",
+      "description": "Patrols the house at night making sure everything is secure. This card can attack your opponent directly if they're not in bed by midnight.",
+      "atk": 2500,
+      "def": 1800
+    },
+    {
+      "id": 28,
+      "image": "assets/cats/28.jpeg",
+      "title": "Treat Goblin",
+      "stars": 3,
+      "type": "Beast / Effect",
+      "description": "Will do anything for treats. You can discard 1 card (a treat) to have this card attack twice during your Battle Phase.",
+      "atk": 1500,
+      "def": 1100
+    },
+    {
+      "id": 29,
+      "image": "assets/cats/29.jpeg",
+      "title": "Wise Whiskers",
+      "stars": 11,
+      "type": "Spellcaster / Effect",
+      "description": "Ancient and all-knowing. This card knows exactly when you're about to feed it, even if you're trying to be sneaky. Cannot be fooled by fake-out feeding motions.",
+      "atk": 3800,
+      "def": 3200
+    },
+    {
+      "id": 30,
+      "image": "assets/cats/30.jpeg",
+      "title": "Mischief Maker",
+      "stars": 5,
+      "type": "Fiend / Effect",
+      "description": "Up to no good. Once per turn, you can activate 1 Trap Card from your hand during your opponent's turn because this cat doesn't follow the rules.",
+      "atk": 2200,
+      "def": 1600
+    },
+    {
+      "id": 31,
+      "image": "assets/cats/31.jpeg",
+      "title": "Snuggle Buddy",
+      "stars": 12,
+      "type": "Divine-Beast / Effect",
+      "description": "The ultimate companion. This card cannot be destroyed by battle or card effects. When your life points would become 0, this card purrs and restores them to 100 instead.",
+      "atk": 4500,
+      "def": 4000
+    }
+  ]
+}

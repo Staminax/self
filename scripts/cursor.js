@@ -44,6 +44,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.addEventListener('mouseover', (e) => {
+        if (e.target.closest('.cats-trigger')) {
+            if (cursorDot) cursorDot.style.opacity = '0';
+            if (cursorEye) cursorEye.classList.remove('active');
+            return;
+        }
         if (e.target.closest(uiSelector)) {
             isOverUI = true;
             if (cursorEye) cursorEye.classList.add('active');
@@ -52,6 +57,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.addEventListener('mouseout', (e) => {
+        if (e.target.closest('.cats-trigger')) {
+            if (cursorDot) cursorDot.style.opacity = '1';
+            return;
+        }
         if (e.target.closest(uiSelector)) {
             if (!e.relatedTarget || !e.relatedTarget.closest(uiSelector)) {
                 isOverUI = false;
