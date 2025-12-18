@@ -60,6 +60,43 @@ let animationProgress = 0;
 let animationStartTime = null;
 const ANIMATION_DURATION = 2000;
 let isAnimating = true;
+let branchRegenTimeout = null;
+let lastRegeneratedIndex = -1;
+
+let textRects = [];
+
+function updatePredictedRects(sectionIndex) {
+    const targetSection = sections[sectionIndex];
+    if (!targetSection) return;
+
+    const cards = targetSection.querySelectorAll('.glass-card');
+    const padding = 20;
+
+    textRects = Array.from(cards).map(card => {
+        const rect = card.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        const viewportWidth = window.innerWidth;
+        const rectWidth = rect.width;
+        const rectHeight = rect.height;
+
+        return {
+            x: (viewportWidth - rectWidth) / 2 - padding,
+            y: (viewportHeight - rectHeight) / 2 - padding,
+            w: rectWidth + (padding * 2),
+            h: rectHeight + (padding * 2)
+        };
+    });
+}
+
+function isInsideCard(x, y) {
+    for (const rect of textRects) {
+        if (x >= rect.x && x <= rect.x + rect.w &&
+            y >= rect.y && y <= rect.y + rect.h) {
+            return true;
+        }
+    }
+    return false;
+}
 
 class BranchSegment {
     constructor(x1, y1, x2, y2, width, depth, startTime = 0, duration = 100, color = null) {
@@ -186,6 +223,10 @@ function createBranch(x, y, angle, length, width, depth, startTime = 0) {
     const x2 = x + Math.cos(angle) * length;
     const y2 = y + Math.sin(angle) * length;
 
+    if (isInsideCard(x2, y2)) {
+        return null;
+    }
+
     const drawSpeed = 0.25;
     const duration = length / drawSpeed;
 
@@ -231,10 +272,8 @@ const observer = new IntersectionObserver((entries) => {
         if (entry.isIntersecting) {
             const index = Array.from(sections).indexOf(entry.target);
             if (index !== -1) {
-                currentSectionIndex = index;
+                requestRegeneration(index);
             }
-
-            generateAllBranches();
 
             if (window.innerWidth <= 768) {
                 if (entry.target.id === 'home') {
@@ -289,20 +328,35 @@ function smoothScroll(target, duration) {
     requestAnimationFrame(animation);
 }
 
+function requestRegeneration(index) {
+    if (index === lastRegeneratedIndex) return;
+    lastRegeneratedIndex = index;
+    currentSectionIndex = index;
+
+    if (branchRegenTimeout) clearTimeout(branchRegenTimeout);
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    allBranches = [];
+    isAnimating = false;
+
+    branchRegenTimeout = setTimeout(() => {
+        generateAllBranches(index);
+    }, 100);
+}
+
 function scrollToSection(index) {
     if (index < 0 || index >= sections.length) return;
 
-    currentSectionIndex = index;
-
-    isScrollLocked = true;
-
     const targetPosition = sections[index].offsetTop;
 
+    requestRegeneration(index);
+
+    isScrollLocked = true;
     smoothScroll(targetPosition, 500);
 
     setTimeout(() => {
         isScrollLocked = false;
-    }, 600);
+    }, 510);
 }
 
 window.addEventListener('wheel', (e) => {
@@ -358,8 +412,11 @@ if (scrollContainer) {
     });
 }
 
-function generateAllBranches() {
+function generateAllBranches(targetIndex = 0) {
+    if (branchRegenTimeout) clearTimeout(branchRegenTimeout);
     allBranches = [];
+
+    updatePredictedRects(targetIndex);
 
     seed = 12345;
 
@@ -403,6 +460,16 @@ function generateAllBranches() {
         } while (!safe && attempts < 20);
 
         if (safe || attempts >= 20) {
+            if (isInsideCard(x, y)) {
+                let rootAttempts = 0;
+                while (isInsideCard(x, y) && rootAttempts < 5) {
+                    x = seededRandom() * canvas.width;
+                    y = seededRandom() * canvas.height;
+                    rootAttempts++;
+                }
+                if (isInsideCard(x, y)) continue;
+            }
+
             rootPositions.push({ x, y });
 
             const angle = seededRandom() * Math.PI * 2;
@@ -429,7 +496,6 @@ function generateAllBranches() {
     animationProgress = 0;
     animationStartTime = null;
     isAnimating = true;
-
 }
 
 function connectNearbyBranches() {
@@ -555,8 +621,12 @@ function animate(timestamp) {
 }
 
 resizeCanvas();
+requestRegeneration(0);
+
 window.addEventListener('resize', () => {
     resizeCanvas();
+    lastRegeneratedIndex = -1;
+    requestRegeneration(currentSectionIndex);
     if (window.innerWidth > 768) {
         if (langSwitcher) {
             langSwitcher.style.opacity = '1';
@@ -564,4 +634,5 @@ window.addEventListener('resize', () => {
         }
     }
 });
+
 animate();
