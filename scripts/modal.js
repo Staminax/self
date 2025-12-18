@@ -8,9 +8,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     modal.classList.remove('active');
 
-    function displayCard(index) {
+    function displayCard(index, direction = null) {
         if (!catCardsData || catCardsData.length === 0) return;
 
+        const cardContainer = document.getElementById('cardContainer');
+        if (direction && cardContainer) {
+            const animationClass = direction === 'next' ? 'slide-left' : 'slide-right';
+            cardContainer.classList.add(animationClass);
+            setTimeout(() => {
+                updateCardData(index);
+                cardContainer.classList.remove(animationClass);
+            }, 200);
+        } else {
+            updateCardData(index);
+        }
+    }
+
+    function updateCardData(index) {
         if (index < 0) index = catCardsData.length - 1;
         if (index >= catCardsData.length) index = 0;
 
@@ -85,14 +99,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (prevBtn) {
         prevBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            displayCard(currentCardIndex - 1);
+            displayCard(currentCardIndex - 1, 'prev');
         });
     }
 
     if (nextBtn) {
         nextBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            displayCard(currentCardIndex + 1);
+            displayCard(currentCardIndex + 1, 'next');
         });
     }
 
@@ -115,9 +129,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'Escape') {
             modal.classList.remove('active');
         } else if (e.key === 'ArrowLeft') {
-            displayCard(currentCardIndex - 1);
+            displayCard(currentCardIndex - 1, 'prev');
         } else if (e.key === 'ArrowRight') {
-            displayCard(currentCardIndex + 1);
+            displayCard(currentCardIndex + 1, 'next');
         }
     });
 });

@@ -680,10 +680,11 @@ body {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     font-weight: 700;
+    padding-bottom: 10px
 }
 
 .deck-counter {
-    font-size: 0.9rem;
+    font-size: 1.2rem;
     color: var(--text-secondary);
     font-family: 'Space Mono', monospace;
     opacity: 0.8;
@@ -810,10 +811,23 @@ body {
     border: 14px solid transparent;
     border-radius: 12px;
     background-clip: padding-box;
-    transition: all 0.3s ease;
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     cursor: none;
     transform-style: preserve-3d;
     perspective: 1000px;
+    will-change: transform, opacity;
+}
+
+#cardContainer.slide-left {
+    opacity: 0 !important;
+    transform: translateX(-100px) scale(0.95) !important;
+    transition: all 0.2s ease-in !important;
+}
+
+#cardContainer.slide-right {
+    opacity: 0 !important;
+    transform: translateX(100px) scale(0.95) !important;
+    transition: all 0.2s ease-in !important;
 }
 
 #cardContainer:hover {
