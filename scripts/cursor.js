@@ -24,8 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
         trailCanvas.height = window.innerHeight;
     });
 
-    let mouseX = window.innerWidth / 2;
-    let mouseY = window.innerHeight / 2;
+    let mouseX = -100;
+    let mouseY = -100;
     const trailPoints = [];
     const maxPoints = 30;
     let isOverUI = false;
@@ -39,6 +39,9 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     document.addEventListener('mousemove', (e) => {
+        if (cursorDot && cursorDot.style.opacity !== '1') {
+            cursorDot.style.opacity = '1';
+        }
         mouseX = e.clientX;
         mouseY = e.clientY;
         lastMoveTime = Date.now();
