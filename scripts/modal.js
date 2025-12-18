@@ -33,10 +33,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const monsterType = document.getElementById('monsterType');
-        if (monsterType) monsterType.textContent = `[${translations[currentLang][randomCard.typeKey]}]`;
+        if (monsterType) monsterType.textContent = `[ ${translations[currentLang][randomCard.typeKey]} ]`;
 
         const description = document.getElementById('monsterDescription');
-        if (description) description.textContent = translations[currentLang][randomCard.descKey];
+        if (description) {
+            description.textContent = translations[currentLang][randomCard.descKey];
+        }
 
         const statValues = document.querySelectorAll('.card-stats .stat-value');
         if (statValues.length >= 2) {

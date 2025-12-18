@@ -232,18 +232,9 @@ const observer = new IntersectionObserver((entries) => {
             const index = Array.from(sections).indexOf(entry.target);
             if (index !== -1) {
                 currentSectionIndex = index;
-                updateNavigation(index, sections.length);
             }
 
             generateAllBranches();
-
-            if (window.innerWidth > 768) {
-                if (entry.target.id === 'home' || entry.target.id === 'about') {
-                    upBtn?.classList.add('hidden');
-                } else {
-                    upBtn?.classList.remove('hidden');
-                }
-            }
 
             if (window.innerWidth <= 768) {
                 if (entry.target.id === 'home') {
@@ -344,52 +335,13 @@ window.addEventListener('keydown', (e) => {
     }
 });
 
-function updateNavigation(currentIndex, totalSections) {
-    document.querySelectorAll('.nav-buttons-row, .scroll-btn').forEach(el => {
-        if (!el.closest('.social-links')) {
-            el.remove();
-        }
+const homeScrollDown = document.getElementById('home-scroll-down');
+if (homeScrollDown) {
+    homeScrollDown.addEventListener('click', (e) => {
+        e.preventDefault();
+        scrollToSection(1);
     });
-
-    const currentSection = sections[currentIndex];
-
-    const navContainer = document.createElement('div');
-    navContainer.className = 'nav-buttons-row';
-
-    const showUp = currentIndex > 0;
-    const showDown = currentIndex < totalSections - 1;
-
-    if (showUp) {
-        const upBtn = document.createElement('a');
-        upBtn.href = '#';
-        upBtn.className = 'social-btn scroll-btn';
-        upBtn.setAttribute('aria-label', 'Scroll Up');
-        upBtn.innerHTML = '<img src="assets/images/arrow-up.svg" alt="Scroll Up">';
-        upBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            scrollToSection(currentIndex - 1);
-        });
-        navContainer.appendChild(upBtn);
-    }
-
-    if (showDown) {
-        const downBtn = document.createElement('a');
-        downBtn.href = '#';
-        downBtn.className = 'social-btn scroll-btn';
-        downBtn.setAttribute('aria-label', 'Scroll Down');
-        downBtn.innerHTML = '<img src="assets/images/arrow-down.svg" alt="Scroll Down">';
-        downBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            scrollToSection(currentIndex + 1);
-        });
-        navContainer.appendChild(downBtn);
-    }
-
-
-    currentSection.appendChild(navContainer);
 }
-
-updateNavigation(0, sections.length);
 
 const scrollContainer = document.querySelector('.scroll-container');
 if (scrollContainer) {

@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     shimmer.style.opacity = '0';
     shimmer.style.transition = 'opacity 0.3s ease';
     shimmer.style.zIndex = '100';
+    shimmer.style.mixBlendMode = 'color-dodge';
     card.appendChild(shimmer);
 
     function calculateTilt(x, y, rect) {
@@ -20,10 +21,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const centerY = rect.height / 2;
         const rotateX = (y - centerY) / 5;
         const rotateY = (centerX - x) / 5;
-        const shimmerX = (x / rect.width) * 100;
-        const shimmerY = (y / rect.height) * 100;
 
-        return { rotateX, rotateY, shimmerX, shimmerY };
+        const position = 50 + (rotateX * 4);
+
+        return { rotateX, rotateY, position };
     }
 
     card.addEventListener('mouseenter', () => {
@@ -44,9 +45,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
-        const { rotateX, rotateY, shimmerX, shimmerY } = calculateTilt(x, y, rect);
+        const { rotateX, rotateY, position } = calculateTilt(x, y, rect);
 
-        shimmer.style.background = `radial-gradient(circle at ${shimmerX}% ${shimmerY}%, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 30%, transparent 60%)`;
+        shimmer.style.background = `linear-gradient(180deg, transparent ${position - 30}%, rgba(255, 255, 255, 0.2) ${position}%, transparent ${position + 30}%)`;
         card.style.transform = `scale(1.05) perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(30px)`;
     });
 
@@ -61,9 +62,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const x = touch.clientX - rect.left;
         const y = touch.clientY - rect.top;
 
-        const { rotateX, rotateY, shimmerX, shimmerY } = calculateTilt(x, y, rect);
+        const { rotateX, rotateY, position } = calculateTilt(x, y, rect);
 
-        shimmer.style.background = `radial-gradient(circle at ${shimmerX}% ${shimmerY}%, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 30%, transparent 60%)`;
+        shimmer.style.background = `linear-gradient(180deg, transparent ${position - 30}%, rgba(255, 255, 255, 0.2) ${position}%, transparent ${position + 30}%)`;
         card.style.transform = `scale(1.05) perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(30px)`;
     });
 

@@ -58,8 +58,8 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 25px;
-    height: 25px;
+    width: 21px;
+    height: 21px;
     border-radius: 50%;
     background: var(--cursor-trail);
     box-shadow:
@@ -70,7 +70,28 @@
     z-index: 99999;
     transform: translate(-50%, -50%);
     will-change: transform;
-    transition: opacity 0.2s ease;
+    transition: opacity 0.2s ease, background 0.3s ease, box-shadow 0.3s ease;
+}
+
+#cursor-dot.hovered {
+    background: #ffffff;
+    box-shadow:
+        0 0 10px rgba(255, 0, 0, 0.9),
+        0 0 20px rgba(255, 0, 0, 0.7),
+        0 0 40px rgba(255, 0, 0, 0.5);
+    animation: pulseCursor 1s ease-in-out infinite;
+}
+
+@keyframes pulseCursor {
+
+    0%,
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    50% {
+        transform: translate(-50%, -50%) scale(0.85);
+    }
 }
 
 .cursor-trail.hidden {

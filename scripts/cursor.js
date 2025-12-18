@@ -52,27 +52,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.addEventListener('mouseover', (e) => {
         if (e.target.closest('.cats-trigger')) {
-            if (cursorDot) cursorDot.style.opacity = '0';
-            if (cursorEye) cursorEye.classList.remove('active');
+            if (cursorDot) cursorDot.classList.add('hovered');
             return;
         }
         if (e.target.closest(uiSelector)) {
             isOverUI = true;
-            if (cursorEye) cursorEye.classList.add('active');
-            if (cursorDot) cursorDot.style.opacity = '0';
+            if (cursorDot) cursorDot.classList.add('hovered');
         }
     });
 
     document.addEventListener('mouseout', (e) => {
         if (e.target.closest('.cats-trigger')) {
-            if (cursorDot) cursorDot.style.opacity = '1';
+            if (cursorDot) cursorDot.classList.remove('hovered');
             return;
         }
         if (e.target.closest(uiSelector)) {
             if (!e.relatedTarget || !e.relatedTarget.closest(uiSelector)) {
                 isOverUI = false;
-                if (cursorEye) cursorEye.classList.remove('active');
-                if (cursorDot) cursorDot.style.opacity = '1';
+                if (cursorDot) cursorDot.classList.remove('hovered');
             }
         }
     });
