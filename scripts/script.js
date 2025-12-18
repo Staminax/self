@@ -369,7 +369,19 @@ window.addEventListener('wheel', (e) => {
     } else if (e.deltaY < 0) {
         scrollToSection(currentSectionIndex - 1);
     }
-}, { passive: true });
+}, { passive: false });
+
+window.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && (e.key === '+' || e.key === '-' || e.key === '=' || e.key === '0')) {
+        e.preventDefault();
+    }
+}, { passive: false });
+
+window.addEventListener('wheel', (e) => {
+    if (e.ctrlKey) {
+        e.preventDefault();
+    }
+}, { passive: false });
 
 
 

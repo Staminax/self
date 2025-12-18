@@ -100,6 +100,10 @@ textarea,
     justify-content: center;
 }
 
+#home {
+    flex-direction: column;
+}
+
 .glass-card {
     text-align: center;
     padding: 3rem 4rem;
@@ -261,6 +265,20 @@ h1 {
     pointer-events: auto;
 }
 
+@media (max-height: 720px) {
+    #home {
+        gap: 2rem;
+    }
+
+    #home-scroll-down {
+        position: relative;
+        bottom: auto;
+        left: auto;
+        transform: none;
+        margin-top: 1rem;
+    }
+}
+
 .scroll-btn img {
     width: 20px;
     height: 20px;
@@ -366,6 +384,58 @@ h1 {
     flex-direction: column;
     align-items: center;
     gap: 1.5rem;
+}
+
+.stacks-card {
+    max-width: 800px;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+.stacks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 3rem;
+    width: 100%;
+    margin-top: 2rem;
+}
+
+.stack-item {
+    max-width: 250px;
+    min-width: 150px;
+    padding: 1.5rem !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin: 0 auto;
+}
+
+.stack-item:hover {
+    transform: translateY(-5px);
+}
+
+.stack-icon {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+    transition: transform 0.3s ease;
+}
+
+.stack-item:hover .stack-icon {
+    transform: scale(1.1);
+}
+
+.stack-name {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    letter-spacing: 0.02em;
 }
 
 .about-card h2 {
