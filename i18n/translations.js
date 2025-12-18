@@ -10,7 +10,7 @@ const translations = {
         personalText: "Graduate @ UniSALESIANO Araçatuba - São Paulo (2019).<br><br>My personal interests vary from multiple related fields in tech to design, photography, fashion and films.",
         catsText: 'Click here to see <strong class="cats-trigger">cats.</strong>',
         stacksTitle: "Tech Stacks",
-        stacksText: "Througout my career, I've worked with multiple tech stacks, ranging from Desktop applications with Delphi & PL/SQL, Web applications with Node.js, Vue and Nuxt.js <strong>(I don't wish, nor I am interested in doing Web Development again)</strong> to Mobile applications with Flutter & Dart.",
+        stacksText: "Throughout my career, I've worked with multiple tech stacks, ranging from Desktop applications with Delphi & PL/SQL, Web applications with Node.js, Vue and Nuxt.js <strong>(I don't wish, nor am I interested in doing Web Development again)</strong> to Mobile applications with Flutter & Dart.",
         typeBeastEffect: "Beast / Effect",
         typeBeastNormal: "Beast / Normal",
         typeFiendEffect: "Fiend / Effect",
