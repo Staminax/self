@@ -97,7 +97,14 @@
 
     <div id="cat-modal" class="modal-overlay">
         <div class="modal-content glass-card">
-            <button class="modal-close" aria-label="Close modal">×</button>
+            <button class="social-btn modal-close" aria-label="Close modal">×</button>
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <h2 class="deck-title">The Silly Cat Deck</h2>
+                    <div class="deck-counter">[ <span id="current-count">1</span> of <span id="total-count"></span> ]
+                    </div>
+                </div>
+            </div>
             <div id="cardContainer">
                 <div class="card-title-container">
                     <h1 id="cardTitle"></h1>
@@ -118,6 +125,10 @@
                     <span class="stat-label">DEF/</span>
                     <span class="stat-value"></span>
                 </div>
+            </div>
+            <div class="modal-footer">
+                <button class="social-btn modal-nav modal-prev" aria-label="Previous cat">&lt;</button>
+                <button class="social-btn modal-nav modal-next" aria-label="Next cat">&gt;</button>
             </div>
         </div>
     </div>
