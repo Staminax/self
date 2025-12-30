@@ -32,6 +32,11 @@ function changeLanguage(lang) {
             skillsList.appendChild(span);
         });
     }
+
+    // Update experience timeline
+    if (typeof updateExperienceTimeline === 'function') {
+        updateExperienceTimeline();
+    }
 }
 
 document.querySelectorAll('.lang-btn').forEach(btn => {

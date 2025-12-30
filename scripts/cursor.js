@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const trailCanvas = document.getElementById('cursor-trail');
     const cursorDot = document.getElementById('cursor-dot');
     const cursorEye = document.getElementById('cursor-eye');
-    const uiSelector = 'a, button, .social-btn, .lang-btn, .scroll-btn, .social-links, .language-switcher';
+    const uiSelector = 'a, button, .social-btn, .lang-btn, .scroll-btn, .social-links, .language-switcher, .timeline-marker-link';
 
     if (window.matchMedia('(max-width: 768px)').matches || 'ontouchstart' in window) {
         if (cursorDot) cursorDot.style.display = 'none';

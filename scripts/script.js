@@ -364,6 +364,14 @@ window.addEventListener('wheel', (e) => {
 
     if (isScrollLocked) return;
 
+    // Check if scrolling inside timeline only
+    const timeline = e.target.closest('.timeline');
+
+    if (timeline) {
+        // Completely block section navigation when scrolling in timeline
+        return;
+    }
+
     if (e.deltaY > 0) {
         scrollToSection(currentSectionIndex + 1);
     } else if (e.deltaY < 0) {
