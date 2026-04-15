@@ -72,6 +72,7 @@ function updateExperienceTimeline() {
                 <div class="company-header">
                     <div class="company-name">${exp.company}</div>
                     <div class="job-title">${position}</div>
+                    <div class="job-period">${exp.period}</div>
                     <div class="job-location">${location}</div>
                 </div>
                 ${description ? `<div class="job-description">${description}</div>` : ''}
