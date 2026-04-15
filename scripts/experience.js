@@ -5,7 +5,7 @@ const experiencesData = [
         url: "https://www.bemagro.com/",
         positionKey: "exp1Position",
         period: "Nov 2024 - Present",
-        duration: "1 yr 2 mos",
+        duration: "",
         locationKey: "exp1Location",
         descriptionKey: "exp1Description"
     },
