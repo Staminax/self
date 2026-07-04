@@ -66,9 +66,6 @@ let lastRegeneratedIndex = -1;
 
 let textRects = [];
 
-let embers = [];
-const MAX_EMBERS = 185;
-let emberSpawnAcc = 0;
 let lastAnimateTs = 0;
 
 let transientBranches = [];
@@ -344,7 +341,6 @@ function requestRegeneration(index) {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     allBranches = [];
-    embers = [];
     transientBranches = [];
     isAnimating = false;
 
@@ -444,7 +440,6 @@ if (scrollContainer) {
 function generateAllBranches(targetIndex = 0) {
     if (branchRegenTimeout) clearTimeout(branchRegenTimeout);
     allBranches = [];
-    embers = [];
     transientBranches = [];
 
     updatePredictedRects(targetIndex);
@@ -638,66 +633,6 @@ document.addEventListener('mouseleave', () => {
 
 let totalAnimationDuration = 0;
 
-function spawnEmberAt(x, y) {
-    if (embers.length >= MAX_EMBERS) return;
-    if (isInsideCard(x, y)) return;
-    embers.push({
-        x, y,
-        vx: (seededRandom() - 0.5) * 0.3,
-        vy: -0.15 - seededRandom() * 0.35,
-        size: 1.1 + seededRandom() * 2.2,
-        opacity: 0,
-        targetOpacity: 0.25 + seededRandom() * 0.4,
-        life: 0,
-        maxLife: 4000 + seededRandom() * 5000
-    });
-}
-
-function spawnEmber() {
-    if (embers.length >= MAX_EMBERS) return;
-    const x = seededRandom() * canvas.width;
-    const y = seededRandom() * canvas.height;
-    spawnEmberAt(x, y);
-}
-
-function updateEmbers(dt) {
-    emberSpawnAcc += dt;
-    while (emberSpawnAcc > 80) {
-        spawnEmber();
-        emberSpawnAcc -= 100;
-    }
-    for (let i = embers.length - 1; i >= 0; i--) {
-        const e = embers[i];
-        e.life += dt;
-        e.x += e.vx * dt * 0.06;
-        e.y += e.vy * dt * 0.06;
-        e.vx += (seededRandom() - 0.5) * 0.01;
-        const r = e.life / e.maxLife;
-        if (r < 0.15) e.opacity = (r / 0.15) * e.targetOpacity;
-        else if (r > 0.7) e.opacity = ((1 - r) / 0.3) * e.targetOpacity;
-        else e.opacity = e.targetOpacity;
-        e.opacity *= 0.85 + Math.sin(e.life * 0.004) * 0.15;
-        if (e.life >= e.maxLife) embers.splice(i, 1);
-    }
-}
-
-function drawEmbers() {
-    const colors = getBranchColors();
-    const cr = colors.base.r, cg = colors.base.g, cb = colors.base.b;
-    for (const e of embers) {
-        const dist = Math.sqrt((e.x - mouseX) ** 2 + (e.y - mouseY) ** 2);
-        const boost = dist < 120 ? (1 - dist / 120) * 0.4 : 0;
-        const op = Math.min(1, e.opacity + boost);
-        ctx.fillStyle = `rgba(${cr}, ${cg}, ${cb}, ${op})`;
-        ctx.shadowColor = `rgba(${cr}, ${cg}, ${cb}, 0.9)`;
-        ctx.shadowBlur = 12 + boost * 16;
-        ctx.beginPath();
-        ctx.arc(e.x, e.y, e.size, 0, Math.PI * 2);
-        ctx.fill();
-    }
-    ctx.shadowBlur = 0;
-}
-
 function spawnTransient(ts) {
     if (transientBranches.length >= MAX_TRANSIENTS) return;
     if (allBranches.length < 8) return;
@@ -770,15 +705,6 @@ function updateTransients(ts, dt) {
             t.state = 'dissolve';
             t.stateStart = ts;
         } else if (t.state === 'dissolve') {
-            t.dustAcc += dt;
-            while (t.dustAcc > 60) {
-                const edge = t.edges[Math.floor(seededRandom() * t.edges.length)];
-                const r = seededRandom();
-                const ax = t.vertices[edge[0]].x;
-                const ay = t.vertices[edge[0]].y;
-                spawnEmberAt(ax + (t.vertices[edge[1]].x - ax) * r, ay + (t.vertices[edge[1]].y - ay) * r);
-                t.dustAcc -= 60;
-            }
             if (stateAge >= t.dissolveMs) {
                 transientBranches.splice(i, 1);
             }
@@ -864,8 +790,6 @@ function animate(timestamp) {
     drawBranches(elapsed);
     updateTransients(timestamp, dt);
     drawTransients(timestamp);
-    updateEmbers(dt);
-    drawEmbers();
     requestAnimationFrame(animate);
 }
 
@@ -905,3 +829,37 @@ if (orbEls.length && !reducedMotion) {
 }
 
 animate();
+
+function typeIntro(el, text, delay, speed) {
+    setTimeout(() => {
+        if (!el) return;
+        el.textContent = '';
+        const caret = document.createElement('span');
+        caret.className = 'typewriter-caret';
+        caret.textContent = '|';
+        el.appendChild(caret);
+        let i = 0;
+        const interval = setInterval(() => {
+            if (i < text.length) {
+                caret.before(text[i]);
+                i++;
+            } else {
+                clearInterval(interval);
+            }
+        }, speed);
+    }, delay);
+}
+
+if (reducedMotion) {
+    document.getElementById('intro-overlay')?.classList.add('done');
+    document.getElementById('home')?.classList.add('in-view');
+} else {
+    typeIntro(document.querySelector('.intro-subtitle'), 'original does not mean', 200, 77);
+    typeIntro(document.querySelector('.intro-name'), 'good.', 1800, 168);
+    setTimeout(() => {
+        document.getElementById('home')?.classList.add('in-view');
+    }, 4150);
+    setTimeout(() => {
+        document.getElementById('intro-overlay')?.classList.add('done');
+    }, 4550);
+}

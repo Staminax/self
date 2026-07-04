@@ -26,7 +26,6 @@ function typewriterTitles(scope) {
             } else {
                 clearInterval(el._twInterval);
                 el._twInterval = null;
-                setTimeout(() => { if (caret.parentNode) caret.remove(); }, 500);
             }
         }, 50);
     });

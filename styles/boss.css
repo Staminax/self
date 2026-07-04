@@ -195,6 +195,10 @@
     animation: none;
 }
 
+#home:not(.in-view) .glass-card {
+    opacity: 0;
+}
+
 #home.in-view .glass-card {
     animation: revealCard 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
@@ -310,11 +314,97 @@
     display: inline-block;
     margin-left: 2px;
     font-weight: 300;
-    animation: caretBlink 0.7s steps(2) infinite;
+    animation: caretBlink 0.7s step-end infinite;
 }
 
 @keyframes caretBlink {
     50% { opacity: 0; }
+}
+
+/* ===== Cinematic intro ===== */
+#intro-overlay {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: all;
+    animation: introFade 4.55s ease-out forwards;
+}
+
+.intro-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    animation: introContentOut 0.5s ease-out 3.85s forwards;
+}
+
+.intro-subtitle {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.25);
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    white-space: nowrap;
+    min-height: 1.2em;
+}
+
+.intro-name {
+    font-size: 6rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #ffffff, #a0a0a0, #ffffff, #d0d0d0, #ffffff);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    white-space: nowrap;
+    min-height: 1.2em;
+    animation: gradientFlow 3s ease infinite, introGlow 3s ease-in-out infinite;
+}
+
+.intro-name .typewriter-caret {
+    -webkit-text-fill-color: rgba(255, 255, 255, 0.7);
+    background: none;
+}
+
+.intro-line {
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+    border-radius: 2px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    animation: introLine 0.5s ease-out 2.6s forwards;
+}
+
+#intro-overlay.done {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .intro-name { font-size: 4rem; }
+    .intro-subtitle { font-size: 0.75rem; }
+}
+
+@keyframes introFade {
+    0%, 85% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1.04); }
+}
+
+@keyframes introLine {
+    to { width: 120px; }
+}
+
+@keyframes introContentOut {
+    to { opacity: 0; transform: translateY(-40px); filter: blur(8px); }
+}
+
+@keyframes introGlow {
+    0%, 100% { filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.25)); }
+    50% { filter: drop-shadow(0 0 45px rgba(255, 255, 255, 0.45)); }
 }
 
 /* ===== Reduced motion ===== */
@@ -326,7 +416,15 @@
         animation: none;
     }
 
+    #home:not(.in-view) .glass-card {
+        opacity: 1;
+    }
+
     #home.in-view .glass-card {
         animation: none;
+    }
+
+    #intro-overlay {
+        display: none;
     }
 }
