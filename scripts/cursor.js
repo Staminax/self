@@ -11,9 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    if (!trailCanvas) {
-        return;
-    }
+    if (!trailCanvas) return;
 
     const ctx = trailCanvas.getContext('2d');
     trailCanvas.width = window.innerWidth;
@@ -27,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let mouseX = -100;
     let mouseY = -100;
     const trailPoints = [];
-    const maxPoints = 30;
+    const maxPoints = 40;
     let isOverUI = false;
     let lastMoveTime = Date.now();
     let isMoving = false;
@@ -88,36 +86,61 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        if (!isOverUI && isMoving && trailPoints.length > 1) {
+        if (!isOverUI && isMoving && trailPoints.length > 2) {
             const color = getTrailColor();
+            let baseRGB = '255, 255, 255';
+            const match = color.match(/(\d+),\s*(\d+),\s*(\d+)/);
+            if (match) baseRGB = `${match[1]}, ${match[2]}, ${match[3]}`;
 
-            for (let i = 0; i < trailPoints.length - 1; i++) {
-                const point = trailPoints[i];
-                const nextPoint = trailPoints[i + 1];
-                const opacity = (i / trailPoints.length) * 0.9;
-                const width = (i / trailPoints.length) * 20 + 5;
+            const pts = [];
+            pts.push({ x: trailPoints[0].x, y: trailPoints[0].y });
+            for (let i = 1; i < trailPoints.length - 1; i++) {
+                const prev = trailPoints[i - 1];
+                const curr = trailPoints[i];
+                const next = trailPoints[i + 1];
+                const midX1 = (prev.x + curr.x) / 2;
+                const midY1 = (prev.y + curr.y) / 2;
+                const midX2 = (curr.x + next.x) / 2;
+                const midY2 = (curr.y + next.y) / 2;
+                const steps = 3;
+                for (let s = 1; s <= steps; s++) {
+                    const t = s / steps;
+                    const x = (1 - t) * (1 - t) * midX1 + 2 * (1 - t) * t * curr.x + t * t * midX2;
+                    const y = (1 - t) * (1 - t) * midY1 + 2 * (1 - t) * t * curr.y + t * t * midY2;
+                    pts.push({ x, y });
+                }
+            }
+            pts.push({ x: trailPoints[trailPoints.length - 1].x, y: trailPoints[trailPoints.length - 1].y });
 
-                let strokeColor;
-                if (color.startsWith('rgba')) {
-                    strokeColor = color.replace(/[\d.]+\)$/g, `${opacity})`);
-                } else if (color.startsWith('rgb')) {
-                    strokeColor = color.replace('rgb', 'rgba').replace(')', `, ${opacity})`);
-                } else {
-                    strokeColor = `rgba(255, 255, 255, ${opacity})`;
+            if (pts.length >= 3) {
+                const left = [];
+                const right = [];
+                for (let i = 0; i < pts.length; i++) {
+                    const p = pts[i];
+                    const next = pts[Math.min(i + 1, pts.length - 1)];
+                    const prev = pts[Math.max(i - 1, 0)];
+                    const dx = next.x - prev.x;
+                    const dy = next.y - prev.y;
+                    const len = Math.sqrt(dx * dx + dy * dy) || 1;
+                    const nx = -dy / len;
+                    const ny = dx / len;
+                    const t = i / (pts.length - 1);
+                    const w = t * 8 + 0.5;
+                    left.push({ x: p.x + nx * w, y: p.y + ny * w });
+                    right.push({ x: p.x - nx * w, y: p.y - ny * w });
                 }
 
-                ctx.strokeStyle = strokeColor;
-                ctx.lineWidth = width;
-                ctx.lineCap = 'round';
-                ctx.lineJoin = 'round';
-
-                ctx.shadowBlur = 20;
-                ctx.shadowColor = strokeColor;
+                const grad = ctx.createLinearGradient(pts[0].x, pts[0].y, pts[pts.length - 1].x, pts[pts.length - 1].y);
+                grad.addColorStop(0, `rgba(${baseRGB}, 0)`);
+                grad.addColorStop(1, `rgba(${baseRGB}, 0.55)`);
+                ctx.fillStyle = grad;
 
                 ctx.beginPath();
-                ctx.moveTo(point.x, point.y);
-                ctx.lineTo(nextPoint.x, nextPoint.y);
-                ctx.stroke();
+                ctx.moveTo(left[0].x, left[0].y);
+                for (let i = 1; i < left.length; i++) ctx.lineTo(left[i].x, left[i].y);
+                for (let i = right.length - 1; i >= 0; i--) ctx.lineTo(right[i].x, right[i].y);
+                ctx.closePath();
+                ctx.fill();
             }
         }
 

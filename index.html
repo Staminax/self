@@ -6,16 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Gustavo B.</title>
     <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
-    <link href="https://fonts.googleapis.com/css2?family=Didact+Gothic&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Didact+Gothic&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/cursor.css">
     <link rel="stylesheet" href="styles/theme-toggle.css">
     <link rel="stylesheet" href="styles/navigation.css">
     <link rel="stylesheet" href="styles/experience.css">
+    <link rel="stylesheet" href="styles/boss.css">
 </head>
 
 <body>
     <canvas id="choreographer"></canvas>
+    <div class="atmosphere" aria-hidden="true">
+        <span class="orb orb-1"></span>
+        <span class="orb orb-2"></span>
+        <span class="orb orb-3"></span>
+    </div>
+    <div class="vignette" aria-hidden="true"></div>
+    <div class="grain" aria-hidden="true"></div>
     <canvas id="cursor-trail"></canvas>
     <div id="cursor-dot"></div>
     <div id="cursor-eye">
@@ -33,7 +41,7 @@
     </div>
 
     <main class="scroll-container">
-        <section id="home" class="snap-section">
+        <section id="home" class="snap-section in-view">
             <header class="glass-card">
                 <img src="assets/images/self.jpeg" alt="Profile Picture" class="profile-avatar">
                 <h1>Gustavo B.</h1>

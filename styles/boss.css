@@ -1,0 +1,343 @@
+/* boss.css — monochrome + red: atmosphere, cinema, accent, reveal, mobile */
+
+:root {
+    --accent-1: #ffffff;
+    --accent-2: #a0a0a0;
+    --accent-3: #ff3b3b;
+    --accent-grad: linear-gradient(135deg, #ffffff, #b0b0b0);
+    --accent-glow: rgba(255, 59, 59, 0.22);
+    --glass-tint: rgba(255, 255, 255, 0.03);
+}
+
+[data-theme="light"] {
+    --accent-grad: linear-gradient(135deg, #2a2a2a, #606060);
+    --accent-glow: rgba(255, 59, 59, 0.18);
+    --glass-tint: rgba(255, 255, 255, 0.25);
+}
+
+/* ===== Atmosphere: drifting + rotating aurora orbs ===== */
+.atmosphere {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.3;
+    will-change: transform, translate;
+}
+
+.orb-1 {
+    width: 45vw;
+    height: 45vw;
+    top: -15%;
+    left: -10%;
+    background: radial-gradient(circle at 35% 40%, #ffffff, transparent 65%);
+    animation: drift1 22s ease-in-out infinite;
+}
+
+.orb-2 {
+    width: 50vw;
+    height: 50vw;
+    bottom: -20%;
+    right: -15%;
+    background: radial-gradient(circle at 60% 35%, #a0a0a0, transparent 65%);
+    animation: drift2 28s ease-in-out infinite;
+}
+
+.orb-3 {
+    width: 35vw;
+    height: 35vw;
+    top: 35%;
+    left: 45%;
+    background: radial-gradient(circle at 45% 55%, #ff3b3b, transparent 65%);
+    opacity: 0.13;
+    animation: drift3 32s ease-in-out infinite, redPulse 6s ease-in-out infinite;
+}
+
+[data-theme="light"] .orb {
+    opacity: 0.18;
+}
+
+[data-theme="light"] .orb-3 {
+    opacity: 0.08;
+}
+
+@keyframes drift1 {
+    0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+    33% { transform: translate(15vw, 12vh) scale(1.15) rotate(120deg); }
+    66% { transform: translate(-8vw, 18vh) scale(0.9) rotate(240deg); }
+}
+
+@keyframes drift2 {
+    0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+    33% { transform: translate(-12vw, -10vh) scale(1.1) rotate(-120deg); }
+    66% { transform: translate(8vw, -18vh) scale(0.85) rotate(-240deg); }
+}
+
+@keyframes drift3 {
+    0%, 100% { transform: translate(-50%, 0) scale(1) rotate(0deg); }
+    50% { transform: translate(-50%, -15vh) scale(1.2) rotate(180deg); }
+}
+
+@keyframes redPulse {
+    0%, 100% { opacity: 0.08; }
+    50% { opacity: 0.16; }
+}
+
+/* ===== Cinema: vignette + grain ===== */
+.vignette {
+    position: fixed;
+    inset: 0;
+    z-index: 500;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 45%, rgba(0, 0, 0, 0.35) 100%);
+}
+
+[data-theme="light"] .vignette {
+    background: radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.12) 100%);
+}
+
+.grain {
+    position: fixed;
+    inset: -50%;
+    z-index: 501;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation: grainShift 6s steps(8) infinite;
+}
+
+@keyframes grainShift {
+    0% { transform: translate(0, 0); }
+    10% { transform: translate(-5%, -5%); }
+    20% { transform: translate(-10%, 5%); }
+    30% { transform: translate(5%, -10%); }
+    40% { transform: translate(-5%, 15%); }
+    50% { transform: translate(-10%, 5%); }
+    60% { transform: translate(15%, 0); }
+    70% { transform: translate(0, 10%); }
+    80% { transform: translate(-15%, 0); }
+    90% { transform: translate(10%, 5%); }
+    100% { transform: translate(0, 0); }
+}
+
+/* ===== Typography: animated hero name (silver flow + red breath) ===== */
+#home h1 {
+    background: linear-gradient(135deg, #ffffff, #b0b0b0, #e8e8e8, #ffffff);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientFlow 10s ease infinite, nameRedBreath 6s ease-in-out infinite;
+}
+
+@keyframes gradientFlow {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+@keyframes nameRedBreath {
+    0%, 100% { filter: drop-shadow(0 0 0 transparent); }
+    50% { filter: drop-shadow(0 0 18px rgba(255, 59, 59, 0.25)); }
+}
+
+.about-card h3 {
+    background: var(--accent-grad);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ===== Section title: gradient underline draw-in ===== */
+.glass-card h2 {
+    position: relative;
+}
+
+.glass-card h2::after {
+    content: '';
+    position: absolute;
+    bottom: -0.75rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: var(--accent-grad);
+    border-radius: 2px;
+    transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s;
+}
+
+.snap-section.in-view .glass-card h2::after {
+    width: 50%;
+}
+
+/* ===== Frosted glass upgrade ===== */
+.glass-card::before {
+    backdrop-filter: blur(14px) saturate(135%) brightness(1.02);
+    -webkit-backdrop-filter: blur(14px) saturate(135%) brightness(1.02);
+    background: var(--glass-tint);
+}
+
+.skill-tag::before,
+.social-btn::before {
+    backdrop-filter: blur(10px) saturate(130%) brightness(1.02);
+    -webkit-backdrop-filter: blur(10px) saturate(130%) brightness(1.02);
+    background: var(--glass-tint);
+}
+
+/* ===== Hero one-time intro (sections appear without stagger animation) ===== */
+.glass-card {
+    animation: none;
+}
+
+#home.in-view .glass-card {
+    animation: revealCard 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes revealCard {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== Accent hovers (subtle red glow) ===== */
+.social-btn:hover {
+    box-shadow: 0 8px 20px var(--glass-shadow-lg), 0 0 25px var(--accent-glow);
+}
+
+.profile-avatar {
+    transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+}
+
+.profile-avatar:hover {
+    box-shadow: 0 20px 40px var(--glass-shadow-lg), 0 0 60px rgba(255, 255, 255, 0.15);
+}
+
+.stack-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px var(--glass-shadow-lg), 0 0 25px var(--accent-glow);
+}
+
+.stack-item:hover .stack-icon {
+    filter: drop-shadow(0 4px 12px var(--accent-glow));
+}
+
+.skill-tag:hover {
+    box-shadow: 0 6px 6px var(--glass-shadow), 0 0 20px var(--accent-glow);
+}
+
+/* ===== Active language button: silver gradient + red glow ===== */
+.lang-btn.active {
+    background: var(--accent-grad);
+    color: var(--bg-color);
+    box-shadow: 0 2px 8px var(--glass-shadow);
+}
+
+/* ===== Scroll-down bounce ===== */
+#home-scroll-down img {
+    animation: bounce 2.5s ease-in-out infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+/* ===== Mobile responsive fixes ===== */
+@media (max-width: 768px) {
+    .snap-section {
+        padding: 4rem 0;
+    }
+
+    .stacks-grid {
+        gap: 1.5rem;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    }
+
+    .orb { filter: blur(60px); opacity: 0.2; }
+    .orb-1 { width: 60vw; height: 60vw; }
+    .orb-2 { width: 65vw; height: 65vw; }
+    .orb-3 { width: 50vw; height: 50vw; opacity: 0.08; }
+
+    .vignette {
+        background: radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.25) 100%);
+    }
+
+    .grain { opacity: 0.025; }
+
+    .glass-card::before {
+        backdrop-filter: blur(10px) saturate(130%);
+        -webkit-backdrop-filter: blur(10px) saturate(130%);
+    }
+
+    #home h1 { font-size: 2.25rem; }
+
+    .about-card h3 { font-size: 1.75rem; }
+
+    .stack-item { padding: 1.25rem !important; }
+
+    .stack-icon { width: 40px; height: 40px; }
+
+    .glass-card h2::after { bottom: -0.5rem; }
+}
+
+@media (max-width: 480px) {
+    .stacks-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .stack-item { min-width: auto; }
+
+    .orb { filter: blur(40px); }
+}
+
+/* ===== Section title font consistency ===== */
+.stacks-card h2,
+.experience-card h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+    -webkit-text-fill-color: var(--text-muted);
+    background: none;
+    margin-bottom: -0.5rem;
+}
+
+/* ===== Timeline present indicator ===== */
+.timeline-item:first-child .timeline-card {
+    border-color: var(--glass-highlight);
+    box-shadow: 0 4px 6px var(--glass-shadow), 0 0 15px rgba(255, 255, 255, 0.08);
+}
+
+/* ===== Typewriter caret ===== */
+.typewriter-caret {
+    display: inline-block;
+    margin-left: 2px;
+    font-weight: 300;
+    animation: caretBlink 0.7s steps(2) infinite;
+}
+
+@keyframes caretBlink {
+    50% { opacity: 0; }
+}
+
+/* ===== Reduced motion ===== */
+@media (prefers-reduced-motion: reduce) {
+    .orb,
+    .grain,
+    #home h1,
+    #home-scroll-down img,
+    .typewriter-caret {
+        animation: none;
+    }
+
+    #home.in-view .glass-card {
+        animation: none;
+    }
+}

@@ -54,6 +54,7 @@ let allBranches = [];
 let preservedRoots = [];
 let mouseX = -1000;
 let mouseY = -1000;
+let lastMouseMoveTime = 0;
 
 
 let animationProgress = 0;
@@ -64,6 +65,16 @@ let branchRegenTimeout = null;
 let lastRegeneratedIndex = -1;
 
 let textRects = [];
+
+let embers = [];
+const MAX_EMBERS = 185;
+let emberSpawnAcc = 0;
+let lastAnimateTs = 0;
+
+let transientBranches = [];
+const MAX_TRANSIENTS = 6;
+let transientSpawnAcc = 0;
+let nextTransientAt = 2000;
 
 function updatePredictedRects(sectionIndex) {
     const targetSection = sections[sectionIndex];
@@ -270,23 +281,19 @@ const langSwitcher = document.querySelector('.language-switcher');
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            if (['about', 'stacks', 'experience', 'personal'].includes(entry.target.id)) {
+                if (typeof typewriterTitles === 'function') {
+                    setTimeout(() => typewriterTitles('#' + entry.target.id), 200);
+                }
+            }
             const index = Array.from(sections).indexOf(entry.target);
             if (index !== -1) {
                 requestRegeneration(index);
             }
 
-            if (window.innerWidth <= 768) {
-                if (entry.target.id === 'home') {
-                    langSwitcher.style.opacity = '1';
-                    langSwitcher.style.pointerEvents = 'auto';
-                } else {
-                    langSwitcher.style.opacity = '0';
-                    langSwitcher.style.pointerEvents = 'none';
-                }
-            } else {
-                langSwitcher.style.opacity = '1';
-                langSwitcher.style.pointerEvents = 'auto';
-            }
+            langSwitcher.style.opacity = '1';
+            langSwitcher.style.pointerEvents = 'auto';
         }
     });
 }, observerOptions);
@@ -337,6 +344,8 @@ function requestRegeneration(index) {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     allBranches = [];
+    embers = [];
+    transientBranches = [];
     isAnimating = false;
 
     branchRegenTimeout = setTimeout(() => {
@@ -435,6 +444,8 @@ if (scrollContainer) {
 function generateAllBranches(targetIndex = 0) {
     if (branchRegenTimeout) clearTimeout(branchRegenTimeout);
     allBranches = [];
+    embers = [];
+    transientBranches = [];
 
     updatePredictedRects(targetIndex);
 
@@ -572,6 +583,11 @@ function connectNearbyBranches() {
 function drawBranches(currentAnimationTime) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    const now = Date.now();
+    const stillTime = now - lastMouseMoveTime;
+    const stillness = lastMouseMoveTime > 0 ? Math.min(1, stillTime / 400) : 0;
+    const pulse = stillness > 0 ? Math.sin(now * 0.004) * 0.12 * stillness : 0;
+
     for (const branch of allBranches) {
         if (isAnimating && branch.startTime > currentAnimationTime) {
             break;
@@ -583,6 +599,7 @@ function drawBranches(currentAnimationTime) {
         if (distance < config.hoverRadius) {
             hoverEffect = 1 - (distance / config.hoverRadius);
             hoverEffect = Math.pow(hoverEffect, 2);
+            hoverEffect = Math.min(1, hoverEffect * (1 + stillness * 0.5) + pulse);
         }
 
         branch.draw(hoverEffect, isAnimating ? currentAnimationTime : Infinity);
@@ -592,6 +609,7 @@ function drawBranches(currentAnimationTime) {
 const uiSelector = '.social-links, .scroll-btn, .language-switcher';
 
 window.addEventListener('mousemove', (e) => {
+    lastMouseMoveTime = Date.now();
     if (e.target.closest(uiSelector)) {
         mouseX = -1000;
         mouseY = -1000;
@@ -602,6 +620,7 @@ window.addEventListener('mousemove', (e) => {
 });
 
 window.addEventListener('touchmove', (e) => {
+    lastMouseMoveTime = Date.now();
     if (e.target.closest(uiSelector)) {
         mouseX = -1000;
         mouseY = -1000;
@@ -619,7 +638,213 @@ document.addEventListener('mouseleave', () => {
 
 let totalAnimationDuration = 0;
 
+function spawnEmberAt(x, y) {
+    if (embers.length >= MAX_EMBERS) return;
+    if (isInsideCard(x, y)) return;
+    embers.push({
+        x, y,
+        vx: (seededRandom() - 0.5) * 0.3,
+        vy: -0.15 - seededRandom() * 0.35,
+        size: 1.1 + seededRandom() * 2.2,
+        opacity: 0,
+        targetOpacity: 0.25 + seededRandom() * 0.4,
+        life: 0,
+        maxLife: 4000 + seededRandom() * 5000
+    });
+}
+
+function spawnEmber() {
+    if (embers.length >= MAX_EMBERS) return;
+    const x = seededRandom() * canvas.width;
+    const y = seededRandom() * canvas.height;
+    spawnEmberAt(x, y);
+}
+
+function updateEmbers(dt) {
+    emberSpawnAcc += dt;
+    while (emberSpawnAcc > 80) {
+        spawnEmber();
+        emberSpawnAcc -= 100;
+    }
+    for (let i = embers.length - 1; i >= 0; i--) {
+        const e = embers[i];
+        e.life += dt;
+        e.x += e.vx * dt * 0.06;
+        e.y += e.vy * dt * 0.06;
+        e.vx += (seededRandom() - 0.5) * 0.01;
+        const r = e.life / e.maxLife;
+        if (r < 0.15) e.opacity = (r / 0.15) * e.targetOpacity;
+        else if (r > 0.7) e.opacity = ((1 - r) / 0.3) * e.targetOpacity;
+        else e.opacity = e.targetOpacity;
+        e.opacity *= 0.85 + Math.sin(e.life * 0.004) * 0.15;
+        if (e.life >= e.maxLife) embers.splice(i, 1);
+    }
+}
+
+function drawEmbers() {
+    const colors = getBranchColors();
+    const cr = colors.base.r, cg = colors.base.g, cb = colors.base.b;
+    for (const e of embers) {
+        const dist = Math.sqrt((e.x - mouseX) ** 2 + (e.y - mouseY) ** 2);
+        const boost = dist < 120 ? (1 - dist / 120) * 0.4 : 0;
+        const op = Math.min(1, e.opacity + boost);
+        ctx.fillStyle = `rgba(${cr}, ${cg}, ${cb}, ${op})`;
+        ctx.shadowColor = `rgba(${cr}, ${cg}, ${cb}, 0.9)`;
+        ctx.shadowBlur = 12 + boost * 16;
+        ctx.beginPath();
+        ctx.arc(e.x, e.y, e.size, 0, Math.PI * 2);
+        ctx.fill();
+    }
+    ctx.shadowBlur = 0;
+}
+
+function spawnTransient(ts) {
+    if (transientBranches.length >= MAX_TRANSIENTS) return;
+    if (allBranches.length < 8) return;
+
+    const centerIdx = Math.floor(seededRandom() * allBranches.length);
+    const center = allBranches[centerIdx];
+    const cx = center.x2, cy = center.y2;
+
+    const maxRange = 400;
+    const candidates = [];
+    const sampleSize = Math.min(80, allBranches.length);
+    for (let i = 0; i < sampleSize; i++) {
+        const idx = Math.floor(seededRandom() * allBranches.length);
+        if (idx === centerIdx) continue;
+        const b = allBranches[idx];
+        const d = Math.sqrt((b.x2 - cx) ** 2 + (b.y2 - cy) ** 2);
+        if (d > 40 && d < maxRange) {
+            candidates.push({ x: b.x2, y: b.y2, angle: Math.atan2(b.y2 - cy, b.x2 - cx) });
+        }
+    }
+
+    if (candidates.length < 5) return;
+
+    candidates.sort((a, b) => a.angle - b.angle);
+
+    const n = seededRandom() < 0.5 ? 5 : 6;
+    const k = 2;
+
+    const vertices = [{ x: cx, y: cy }];
+    const step = candidates.length / n;
+    for (let i = 0; i < n; i++) {
+        const idx = Math.floor(i * step) % candidates.length;
+        vertices.push({ x: candidates[idx].x, y: candidates[idx].y });
+    }
+
+    const edges = [];
+    for (let i = 1; i <= n; i++) {
+        edges.push([0, i]);
+        edges.push([i, ((i - 1 + k) % n) + 1]);
+    }
+
+    transientBranches.push({
+        vertices,
+        edges,
+        state: 'grow',
+        stateStart: ts,
+        growMs: 1200 + seededRandom() * 500,
+        flashMs: 300,
+        dissolveMs: 1200,
+        dustAcc: 0
+    });
+}
+
+function updateTransients(ts, dt) {
+    transientSpawnAcc += dt;
+    if (transientSpawnAcc >= nextTransientAt && transientBranches.length < MAX_TRANSIENTS) {
+        spawnTransient(ts);
+        transientSpawnAcc = 0;
+        nextTransientAt = 2000 + seededRandom() * 1000;
+    }
+
+    for (let i = transientBranches.length - 1; i >= 0; i--) {
+        const t = transientBranches[i];
+        const stateAge = ts - t.stateStart;
+
+        if (t.state === 'grow' && stateAge >= t.growMs) {
+            t.state = 'flash';
+            t.stateStart = ts;
+        } else if (t.state === 'flash' && stateAge >= t.flashMs) {
+            t.state = 'dissolve';
+            t.stateStart = ts;
+        } else if (t.state === 'dissolve') {
+            t.dustAcc += dt;
+            while (t.dustAcc > 60) {
+                const edge = t.edges[Math.floor(seededRandom() * t.edges.length)];
+                const r = seededRandom();
+                const ax = t.vertices[edge[0]].x;
+                const ay = t.vertices[edge[0]].y;
+                spawnEmberAt(ax + (t.vertices[edge[1]].x - ax) * r, ay + (t.vertices[edge[1]].y - ay) * r);
+                t.dustAcc -= 60;
+            }
+            if (stateAge >= t.dissolveMs) {
+                transientBranches.splice(i, 1);
+            }
+        }
+    }
+}
+
+function drawTransients(ts) {
+    const colors = getBranchColors();
+    const cr = colors.base.r, cg = colors.base.g, cb = colors.base.b;
+
+    for (const t of transientBranches) {
+        const stateAge = ts - t.stateStart;
+        let opacity = 0.85;
+        let progress = 1;
+
+        if (t.state === 'grow') {
+            progress = Math.min(1, stateAge / t.growMs);
+        } else if (t.state === 'flash') {
+            opacity = 1;
+        } else if (t.state === 'dissolve') {
+            opacity = 1 - stateAge / t.dissolveMs;
+        }
+
+        const cx = t.vertices[0].x;
+        const cy = t.vertices[0].y;
+        const dist = Math.sqrt((cx - mouseX) ** 2 + (cy - mouseY) ** 2);
+        const hoverBoost = dist < 120 ? (1 - dist / 120) * 0.3 : 0;
+
+        ctx.strokeStyle = `rgba(${cr}, ${cg}, ${cb}, ${Math.min(1, opacity + hoverBoost)})`;
+        ctx.shadowColor = `rgba(${cr}, ${cg}, ${cb}, 0.9)`;
+        ctx.shadowBlur = 10 + hoverBoost * 14;
+        ctx.lineWidth = 3;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+
+        for (const edge of t.edges) {
+            const a = t.vertices[edge[0]];
+            const b = t.vertices[edge[1]];
+            const ex = a.x + (b.x - a.x) * progress;
+            const ey = a.y + (b.y - a.y) * progress;
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(ex, ey);
+            ctx.stroke();
+        }
+
+        if (t.state === 'flash') {
+            const flashOp = 1 - stateAge / t.flashMs;
+            ctx.fillStyle = `rgba(${cr}, ${cg}, ${cb}, ${flashOp})`;
+            ctx.shadowBlur = 24;
+            for (let i = 0; i < t.vertices.length; i++) {
+                const v = t.vertices[i];
+                ctx.beginPath();
+                ctx.arc(v.x, v.y, 3 + flashOp * 5, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+    }
+    ctx.shadowBlur = 0;
+}
+
 function animate(timestamp) {
+    const dt = lastAnimateTs ? timestamp - lastAnimateTs : 16;
+    lastAnimateTs = timestamp;
+
     let elapsed = 0;
 
     if (isAnimating) {
@@ -637,6 +862,10 @@ function animate(timestamp) {
     }
 
     drawBranches(elapsed);
+    updateTransients(timestamp, dt);
+    drawTransients(timestamp);
+    updateEmbers(dt);
+    drawEmbers();
     requestAnimationFrame(animate);
 }
 
@@ -654,5 +883,25 @@ window.addEventListener('resize', () => {
         }
     }
 });
+
+const orbEls = document.querySelectorAll('.orb');
+let parallaxRAF = null;
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+if (orbEls.length && !reducedMotion) {
+    window.addEventListener('mousemove', (e) => {
+        if (window.innerWidth <= 768) return;
+        if (parallaxRAF) return;
+        parallaxRAF = requestAnimationFrame(() => {
+            const px = (e.clientX / window.innerWidth - 0.5) * 2;
+            const py = (e.clientY / window.innerHeight - 0.5) * 2;
+            orbEls.forEach((orb, i) => {
+                const depth = (i + 1) * 10;
+                orb.style.translate = `${px * depth}px ${py * depth}px`;
+            });
+            parallaxRAF = null;
+        });
+    });
+}
 
 animate();

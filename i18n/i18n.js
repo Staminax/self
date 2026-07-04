@@ -1,3 +1,37 @@
+function typewriterTitles(scope) {
+    const selector = scope
+        ? scope + ' h2[data-i18n]'
+        : '.about-card h2[data-i18n], .stacks-card h2[data-i18n], .experience-card h2[data-i18n]';
+
+    document.querySelectorAll(selector).forEach(el => {
+        if (el._twInterval) {
+            clearInterval(el._twInterval);
+            el._twInterval = null;
+        }
+
+        const text = el.textContent;
+        if (!text || text.length === 0) return;
+
+        el.textContent = '';
+        const caret = document.createElement('span');
+        caret.className = 'typewriter-caret';
+        caret.textContent = '|';
+        el.appendChild(caret);
+
+        let i = 0;
+        el._twInterval = setInterval(() => {
+            if (i < text.length) {
+                caret.before(text[i]);
+                i++;
+            } else {
+                clearInterval(el._twInterval);
+                el._twInterval = null;
+                setTimeout(() => { if (caret.parentNode) caret.remove(); }, 500);
+            }
+        }, 50);
+    });
+}
+
 function changeLanguage(lang) {
     if (!translations[lang]) return;
 
@@ -36,6 +70,10 @@ function changeLanguage(lang) {
     // Update experience timeline
     if (typeof updateExperienceTimeline === 'function') {
         updateExperienceTimeline();
+    }
+
+    if (document.readyState !== 'loading' && typeof typewriterTitles === 'function') {
+        typewriterTitles();
     }
 }
 
