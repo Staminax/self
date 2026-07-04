@@ -18,6 +18,7 @@
         uniform float u_time;
         uniform vec2 u_res;
         uniform vec2 u_mouse;
+        uniform vec2 u_mouseVel;
         uniform float u_intensity;
         uniform float u_light;
 
@@ -55,18 +56,24 @@
             float t = u_time * 0.035;
             p += vec2(t * 0.2, t * 0.12);
 
+            vec2 mp = (u_mouse - 0.5 * u_res) / min(u_res.x, u_res.y) * 3.0 * breath;
+            mp += vec2(t * 0.2, t * 0.12);
+            float mouseDist = length(p - mp);
+
+            vec2 fromMouse = p - mp + vec2(0.0001);
+            p += normalize(fromMouse) * exp(-mouseDist * 2.0) * 0.2;
+
             vec2 q = vec2(fbm(p + vec2(t * 0.8, 0.0)),
                            fbm(p + vec2(5.2, 1.3) - t * 0.6));
             vec2 r = vec2(fbm(p + 1.8 * q + vec2(1.7, 9.2) + t * 0.4),
                            fbm(p + 1.8 * q + vec2(8.3, 2.8) - t * 0.3));
             float f = fbm(p + 2.0 * r + vec2(t * 0.15, t * 0.08));
 
-            vec2 mp = (u_mouse - 0.5 * u_res) / min(u_res.x, u_res.y) * 3.0 * breath;
-            float mouseDist = length(p - mp);
-            f += exp(-mouseDist * 2.0) * 0.1;
-
             float veins = 1.0 - abs(f - 0.5) * 2.0;
             veins = pow(max(veins, 0.0), 2.5);
+
+            float cursorClear = exp(-mouseDist * 2.5);
+            veins *= 1.0 - cursorClear * 0.6;
 
             float redThread = smoothstep(0.49, 0.51, f) * smoothstep(0.53, 0.51, f);
 
@@ -84,6 +91,8 @@
             float cursorGlow = exp(-mouseDist * 1.5) * 0.15 * u_intensity;
             col += veinCol * cursorGlow;
             alpha += cursorGlow;
+
+            alpha *= 1.0 - cursorClear * 0.5;
 
             alpha *= 1.0 - length(uv - 0.5) * 0.6;
 
@@ -124,10 +133,13 @@
     const uTime = gl.getUniformLocation(prog, 'u_time');
     const uRes = gl.getUniformLocation(prog, 'u_res');
     const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+    const uMouseVel = gl.getUniformLocation(prog, 'u_mouseVel');
     const uIntensity = gl.getUniformLocation(prog, 'u_intensity');
     const uLight = gl.getUniformLocation(prog, 'u_light');
 
     let mouseX = 0, mouseY = 0;
+    let mouseVelX = 0, mouseVelY = 0;
+    let prevMouseX = 0, prevMouseY = 0;
     let currentIntensity = 0;
     let isLight = document.documentElement.getAttribute('data-theme') === 'light' ? 1.0 : 0.0;
 
@@ -151,8 +163,14 @@
     window.addEventListener('mousemove', (e) => {
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
         const scale = getScale();
-        mouseX = e.clientX * dpr * scale;
-        mouseY = canvas.height - e.clientY * dpr * scale;
+        const nx = e.clientX * dpr * scale;
+        const ny = canvas.height - e.clientY * dpr * scale;
+        mouseVelX = (nx - prevMouseX) * 0.8 + mouseVelX * 0.2;
+        mouseVelY = (ny - prevMouseY) * 0.8 + mouseVelY * 0.2;
+        prevMouseX = nx;
+        prevMouseY = ny;
+        mouseX = nx;
+        mouseY = ny;
     });
 
     new MutationObserver(() => {
@@ -164,6 +182,7 @@
         gl.uniform1f(uTime, time);
         gl.uniform2f(uRes, canvas.width, canvas.height);
         gl.uniform2f(uMouse, mouseX, mouseY);
+        gl.uniform2f(uMouseVel, mouseVelX, mouseVelY);
         gl.uniform1f(uIntensity, intensity);
         gl.uniform1f(uLight, isLight);
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
@@ -183,6 +202,8 @@
     function render() {
         const time = (performance.now() - startTime) * 0.001;
         currentIntensity += (window.shaderTargetIntensity - currentIntensity) * 0.02;
+        mouseVelX *= 0.92;
+        mouseVelY *= 0.92;
         drawFrame(time, currentIntensity);
         requestAnimationFrame(render);
     }
