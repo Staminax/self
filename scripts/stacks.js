@@ -13,7 +13,7 @@ function renderStacks() {
 
     grid.innerHTML = stacksData.map(stack => `
         <div class="glass-card stack-item">
-            <img src="${stack.icon}" alt="${stack.name}" class="stack-icon" onerror="this.src='assets/images/github.svg';">
+            <img src="${stack.icon}" alt="${stack.name}" class="stack-icon" loading="lazy" width="48" height="48" onerror="this.src='assets/images/github.svg';">
             <span class="stack-name">${stack.name}</span>
             <span class="stack-desc">${stack.desc}</span>
         </div>

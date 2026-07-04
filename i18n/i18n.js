@@ -71,7 +71,7 @@ function changeLanguage(lang) {
         updateExperienceTimeline();
     }
 
-    if (document.readyState !== 'loading' && typeof typewriterTitles === 'function') {
+    if (document.readyState === 'complete' && typeof typewriterTitles === 'function') {
         typewriterTitles();
     }
 }

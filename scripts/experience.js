@@ -74,7 +74,7 @@ function updateExperienceTimeline() {
             </div>
             <div class="timeline-card">
                 <a href="${exp.url}" target="_blank" rel="noopener noreferrer" class="timeline-logo-link">
-                    <img src="${exp.logo}" alt="${exp.company}" class="company-logo" onerror="this.style.display='none'">
+                    <img src="${exp.logo}" alt="${exp.company}" class="company-logo" loading="lazy" width="50" height="50" onerror="this.style.display='none'">
                 </a>
                 <div class="timeline-body">
                     <div class="company-name">${exp.company}</div>
