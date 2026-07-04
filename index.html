@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gustavo B.</title>
     <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
     <link
@@ -33,6 +33,7 @@
     </div>
     <div class="vignette" aria-hidden="true"></div>
     <div class="grain" aria-hidden="true"></div>
+    <div id="section-flash" aria-hidden="true"></div>
     <canvas id="cursor-trail"></canvas>
     <div id="cursor-dot"></div>
     <div id="cursor-eye">
@@ -113,9 +114,9 @@
                     My personal interests vary from multiple related fields in tech to design, photography, fashion and
                     films.
                 </p>
-                <!-- <div class="cats-container">
+                <div class="cats-container">
                     <p><span data-i18n="catsText">I love <strong class="cats-trigger">cats.</strong></span></p>
-                </div> -->
+                </div>
             </div>
         </section>
     </main>
@@ -125,7 +126,7 @@
             <button class="social-btn modal-close" aria-label="Close modal">×</button>
             <div class="modal-header">
                 <div class="modal-title-group">
-                    <h2 class="deck-title">The Silly Cat Deck</h2>
+                    <h2 class="deck-title">The Silly Cats Deck</h2>
                     <div class="deck-counter">[ <span id="current-count">1</span> of <span id="total-count"></span> ]
                     </div>
                 </div>
@@ -138,7 +139,7 @@
                 <div class="card-stars">
                 </div>
                 <div class="card-image">
-                    <img src="" alt="Cat">
+                    <img src="" alt="Cats">
                 </div>
                 <div class="card-info">
                     <h4 id="monsterType"></h4>
@@ -157,6 +158,14 @@
             </div>
         </div>
     </div>
+
+    <nav class="section-dots" aria-label="Section navigation">
+        <button class="section-dot active" data-section="0" aria-label="Home"></button>
+        <button class="section-dot" data-section="1" aria-label="About"></button>
+        <button class="section-dot" data-section="2" aria-label="Tech Stack"></button>
+        <button class="section-dot" data-section="3" aria-label="Experience"></button>
+        <button class="section-dot" data-section="4" aria-label="Personal"></button>
+    </nav>
 
     <script src="i18n/translations.js"></script>
     <script src="i18n/i18n.js"></script>

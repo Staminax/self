@@ -14,7 +14,11 @@ function seededRandom() {
     return seed / 233280;
 }
 
+let cachedBranchColors = null;
+
 function getBranchColors() {
+    if (cachedBranchColors) return cachedBranchColors;
+
     const root = document.documentElement;
     const baseColor = getComputedStyle(root).getPropertyValue('--branch-base').trim();
     const hoverColor = getComputedStyle(root).getPropertyValue('--branch-hover').trim();
@@ -28,11 +32,15 @@ function getBranchColors() {
         } : { r: 200, g: 200, b: 200 };
     };
 
-    return {
+    cachedBranchColors = {
         base: hexToRgb(baseColor),
         hover: hexToRgb(hoverColor)
     };
+    return cachedBranchColors;
 }
+
+new MutationObserver(() => { cachedBranchColors = null; })
+    .observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
 const config = {
     baseColor: { r: 200, g: 200, h: 200 },
@@ -287,6 +295,9 @@ const observer = new IntersectionObserver((entries) => {
             const index = Array.from(sections).indexOf(entry.target);
             if (index !== -1) {
                 requestRegeneration(index);
+                document.querySelectorAll('.section-dot').forEach((dot, i) => {
+                    dot.classList.toggle('active', i === index);
+                });
             }
 
             langSwitcher.style.opacity = '1';
@@ -297,6 +308,12 @@ const observer = new IntersectionObserver((entries) => {
 
 document.querySelectorAll('.snap-section').forEach(section => {
     observer.observe(section);
+});
+
+document.querySelectorAll('.section-dot').forEach(dot => {
+    dot.addEventListener('click', () => {
+        scrollToSection(parseInt(dot.dataset.section));
+    });
 });
 
 
@@ -355,6 +372,12 @@ function scrollToSection(index) {
     const targetPosition = sections[index].offsetTop;
 
     requestRegeneration(index);
+
+    const flash = document.getElementById('section-flash');
+    if (flash) {
+        flash.classList.add('active');
+        setTimeout(() => flash.classList.remove('active'), 250);
+    }
 
     isScrollLocked = true;
     smoothScroll(targetPosition, 500);
