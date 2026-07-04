@@ -11,30 +11,11 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    if (!trailCanvas) return;
-
-    const ctx = trailCanvas.getContext('2d');
-    trailCanvas.width = window.innerWidth;
-    trailCanvas.height = window.innerHeight;
-
-    window.addEventListener('resize', () => {
-        trailCanvas.width = window.innerWidth;
-        trailCanvas.height = window.innerHeight;
-    });
+    if (trailCanvas) trailCanvas.style.display = 'none';
 
     let mouseX = -100;
     let mouseY = -100;
-    const trailPoints = [];
-    const maxPoints = 40;
     let isOverUI = false;
-    let lastMoveTime = Date.now();
-    let isMoving = false;
-
-    const getTrailColor = () => {
-        const style = getComputedStyle(document.documentElement);
-        const color = style.getPropertyValue('--cursor-trail').trim();
-        return color;
-    };
 
     document.addEventListener('mousemove', (e) => {
         if (cursorDot && cursorDot.style.opacity !== '1') {
@@ -42,13 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         mouseX = e.clientX;
         mouseY = e.clientY;
-        lastMoveTime = Date.now();
-        isMoving = true;
-
-        trailPoints.push({ x: mouseX, y: mouseY });
-        if (trailPoints.length > maxPoints) {
-            trailPoints.shift();
-        }
     });
 
     document.addEventListener('mouseover', (e) => {
@@ -76,74 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const animateCursor = () => {
-        ctx.clearRect(0, 0, trailCanvas.width, trailCanvas.height);
-
-        const timeSinceMove = Date.now() - lastMoveTime;
-        if (timeSinceMove > 100) {
-            isMoving = false;
-            if (trailPoints.length > 0) {
-                trailPoints.shift();
-            }
-        }
-
-        if (!isOverUI && isMoving && trailPoints.length > 2) {
-            const color = getTrailColor();
-            let baseRGB = '255, 255, 255';
-            const match = color.match(/(\d+),\s*(\d+),\s*(\d+)/);
-            if (match) baseRGB = `${match[1]}, ${match[2]}, ${match[3]}`;
-
-            const pts = [];
-            pts.push({ x: trailPoints[0].x, y: trailPoints[0].y });
-            for (let i = 1; i < trailPoints.length - 1; i++) {
-                const prev = trailPoints[i - 1];
-                const curr = trailPoints[i];
-                const next = trailPoints[i + 1];
-                const midX1 = (prev.x + curr.x) / 2;
-                const midY1 = (prev.y + curr.y) / 2;
-                const midX2 = (curr.x + next.x) / 2;
-                const midY2 = (curr.y + next.y) / 2;
-                const steps = 3;
-                for (let s = 1; s <= steps; s++) {
-                    const t = s / steps;
-                    const x = (1 - t) * (1 - t) * midX1 + 2 * (1 - t) * t * curr.x + t * t * midX2;
-                    const y = (1 - t) * (1 - t) * midY1 + 2 * (1 - t) * t * curr.y + t * t * midY2;
-                    pts.push({ x, y });
-                }
-            }
-            pts.push({ x: trailPoints[trailPoints.length - 1].x, y: trailPoints[trailPoints.length - 1].y });
-
-            if (pts.length >= 3) {
-                const left = [];
-                const right = [];
-                for (let i = 0; i < pts.length; i++) {
-                    const p = pts[i];
-                    const next = pts[Math.min(i + 1, pts.length - 1)];
-                    const prev = pts[Math.max(i - 1, 0)];
-                    const dx = next.x - prev.x;
-                    const dy = next.y - prev.y;
-                    const len = Math.sqrt(dx * dx + dy * dy) || 1;
-                    const nx = -dy / len;
-                    const ny = dx / len;
-                    const t = i / (pts.length - 1);
-                    const w = t * 8 + 0.5;
-                    left.push({ x: p.x + nx * w, y: p.y + ny * w });
-                    right.push({ x: p.x - nx * w, y: p.y - ny * w });
-                }
-
-                const grad = ctx.createLinearGradient(pts[0].x, pts[0].y, pts[pts.length - 1].x, pts[pts.length - 1].y);
-                grad.addColorStop(0, `rgba(${baseRGB}, 0)`);
-                grad.addColorStop(1, `rgba(${baseRGB}, 0.55)`);
-                ctx.fillStyle = grad;
-
-                ctx.beginPath();
-                ctx.moveTo(left[0].x, left[0].y);
-                for (let i = 1; i < left.length; i++) ctx.lineTo(left[i].x, left[i].y);
-                for (let i = right.length - 1; i >= 0; i--) ctx.lineTo(right[i].x, right[i].y);
-                ctx.closePath();
-                ctx.fill();
-            }
-        }
-
         if (cursorDot) {
             cursorDot.style.left = `${mouseX}px`;
             cursorDot.style.top = `${mouseY}px`;

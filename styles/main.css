@@ -245,7 +245,7 @@ h1 {
     filter: invert(1);
 }
 
-[data-theme="light"] .scroll-up-btn img {
+[data-theme="light"] .scroll-btn img {
     filter: invert(1);
 }
 
@@ -293,36 +293,6 @@ h1 {
 
 .scroll-btn:hover img {
     animation-play-state: paused;
-}
-
-.scroll-up-btn {
-    position: fixed;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 100;
-    width: 50px;
-    height: 50px;
-    font-size: 1.5rem;
-    cursor: pointer;
-    transition: all 0.5s ease;
-    opacity: 1;
-    pointer-events: auto;
-}
-
-.scroll-up-btn.hidden {
-    opacity: 0;
-    pointer-events: none;
-    transform: translateX(-50%) translateY(20px);
-}
-
-.scroll-up-btn:hover {
-    transform: translateX(-50%) translateY(-5px) scale(1.1);
-}
-
-.scroll-up-btn img {
-    width: 24px;
-    height: 24px;
 }
 
 

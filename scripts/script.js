@@ -281,7 +281,6 @@ const sections = document.querySelectorAll('.snap-section');
 let currentSectionIndex = 0;
 let isScrollLocked = false;
 
-const upBtn = document.querySelector('.scroll-up-btn');
 const langSwitcher = document.querySelector('.language-switcher');
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -296,7 +295,13 @@ const observer = new IntersectionObserver((entries) => {
             if (index !== -1) {
                 requestRegeneration(index);
                 document.querySelectorAll('.section-dot').forEach((dot, i) => {
-                    dot.classList.toggle('active', i === index);
+                    if (i === index) {
+                        dot.classList.remove('active');
+                        void dot.offsetWidth;
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
                 });
             }
 
@@ -446,19 +451,6 @@ if (homeScrollDown) {
 }
 
 const scrollContainer = document.querySelector('.scroll-container');
-if (scrollContainer) {
-    scrollContainer.addEventListener('scroll', () => {
-        if (window.innerWidth <= 768) {
-            const isAtBottom = scrollContainer.scrollTop + scrollContainer.clientHeight >= scrollContainer.scrollHeight - 50;
-
-            if (isAtBottom) {
-                upBtn?.classList.remove('hidden');
-            } else {
-                upBtn?.classList.add('hidden');
-            }
-        }
-    });
-}
 
 function generateAllBranches(targetIndex = 0) {
     if (branchRegenTimeout) clearTimeout(branchRegenTimeout);
@@ -757,13 +749,27 @@ function drawTransients(ts) {
         const dist = Math.sqrt((cx - mouseX) ** 2 + (cy - mouseY) ** 2);
         const hoverBoost = dist < 120 ? (1 - dist / 120) * 0.3 : 0;
 
-        ctx.strokeStyle = `rgba(${cr}, ${cg}, ${cb}, ${Math.min(1, opacity + hoverBoost)})`;
-        ctx.shadowColor = `rgba(${cr}, ${cg}, ${cb}, 0.9)`;
-        ctx.shadowBlur = 10 + hoverBoost * 14;
-        ctx.lineWidth = 3;
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
 
+        ctx.strokeStyle = `rgba(${cr}, ${cg}, ${cb}, ${Math.min(1, (opacity + hoverBoost) * 0.3)})`;
+        ctx.shadowColor = `rgba(${cr}, ${cg}, ${cb}, 1)`;
+        ctx.shadowBlur = 24 + hoverBoost * 24;
+        ctx.lineWidth = 10;
+        for (const edge of t.edges) {
+            const a = t.vertices[edge[0]];
+            const b = t.vertices[edge[1]];
+            const ex = a.x + (b.x - a.x) * progress;
+            const ey = a.y + (b.y - a.y) * progress;
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(ex, ey);
+            ctx.stroke();
+        }
+
+        ctx.strokeStyle = `rgba(${cr}, ${cg}, ${cb}, ${Math.min(1, opacity + hoverBoost)})`;
+        ctx.shadowBlur = 8 + hoverBoost * 12;
+        ctx.lineWidth = 4;
         for (const edge of t.edges) {
             const a = t.vertices[edge[0]];
             const b = t.vertices[edge[1]];
@@ -778,11 +784,11 @@ function drawTransients(ts) {
         if (t.state === 'flash') {
             const flashOp = 1 - stateAge / t.flashMs;
             ctx.fillStyle = `rgba(${cr}, ${cg}, ${cb}, ${flashOp})`;
-            ctx.shadowBlur = 24;
+            ctx.shadowBlur = 36;
             for (let i = 0; i < t.vertices.length; i++) {
                 const v = t.vertices[i];
                 ctx.beginPath();
-                ctx.arc(v.x, v.y, 3 + flashOp * 5, 0, Math.PI * 2);
+                ctx.arc(v.x, v.y, 5 + flashOp * 8, 0, Math.PI * 2);
                 ctx.fill();
             }
         }
@@ -828,25 +834,7 @@ window.addEventListener('resize', () => {
     }
 });
 
-const orbEls = document.querySelectorAll('.orb');
-let parallaxRAF = null;
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-if (orbEls.length && !reducedMotion) {
-    window.addEventListener('mousemove', (e) => {
-        if (window.innerWidth <= 768) return;
-        if (parallaxRAF) return;
-        parallaxRAF = requestAnimationFrame(() => {
-            const px = (e.clientX / window.innerWidth - 0.5) * 2;
-            const py = (e.clientY / window.innerHeight - 0.5) * 2;
-            orbEls.forEach((orb, i) => {
-                const depth = (i + 1) * 10;
-                orb.style.translate = `${px * depth}px ${py * depth}px`;
-            });
-            parallaxRAF = null;
-        });
-    });
-}
 
 function initBranches() {
     resizeCanvas();
@@ -881,15 +869,18 @@ function typeIntro(el, text, delay, speed, keepCaret) {
 if (reducedMotion) {
     document.getElementById('intro-overlay')?.classList.add('done');
     document.getElementById('home')?.classList.add('in-view');
+    document.getElementById('shader-bg')?.classList.add('behind');
     initBranches();
 } else {
     typeIntro(document.querySelector('.intro-subtitle'), 'original does not mean', 200, 77, false);
     typeIntro(document.querySelector('.intro-name'), 'good.', 1800, 168, true);
+    window.shaderTargetIntensity = 1;
     setTimeout(initBranches, 3850);
     setTimeout(() => {
         document.getElementById('home')?.classList.add('in-view');
     }, 4150);
     setTimeout(() => {
         document.getElementById('intro-overlay')?.classList.add('done');
+        document.getElementById('shader-bg')?.classList.add('behind');
     }, 4550);
 }

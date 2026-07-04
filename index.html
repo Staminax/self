@@ -27,12 +27,8 @@
             <div class="intro-line"></div>
         </div>
     </div>
+    <canvas id="shader-bg"></canvas>
     <canvas id="choreographer"></canvas>
-    <div class="atmosphere" aria-hidden="true">
-        <span class="orb orb-1"></span>
-        <span class="orb orb-2"></span>
-        <span class="orb orb-3"></span>
-    </div>
     <div class="vignette" aria-hidden="true"></div>
     <div class="grain" aria-hidden="true"></div>
     <div id="section-flash" aria-hidden="true"></div>
@@ -163,16 +159,32 @@
     </div>
 
     <nav class="section-dots" aria-label="Section navigation">
-        <button class="section-dot active" data-section="0" aria-label="Home"></button>
-        <button class="section-dot" data-section="1" aria-label="About"></button>
-        <button class="section-dot" data-section="2" aria-label="Tech Stack"></button>
-        <button class="section-dot" data-section="3" aria-label="Experience"></button>
-        <button class="section-dot" data-section="4" aria-label="Personal"></button>
+        <button class="section-dot active" data-section="0" aria-label="Intro">
+            <span class="dot-label" data-i18n="dotIntro">INTRO</span>
+            <span class="dot-numeral">I</span>
+        </button>
+        <button class="section-dot" data-section="1" aria-label="Work">
+            <span class="dot-label" data-i18n="dotWork">WORK</span>
+            <span class="dot-numeral">II</span>
+        </button>
+        <button class="section-dot" data-section="2" aria-label="Manifesto">
+            <span class="dot-label" data-i18n="dotManifesto">MANIFESTO</span>
+            <span class="dot-numeral">III</span>
+        </button>
+        <button class="section-dot" data-section="3" aria-label="Career">
+            <span class="dot-label" data-i18n="dotCareer">CAREER</span>
+            <span class="dot-numeral">IV</span>
+        </button>
+        <button class="section-dot" data-section="4" aria-label="Abstract">
+            <span class="dot-label" data-i18n="dotAbstract">ABSTRACT</span>
+            <span class="dot-numeral">V</span>
+        </button>
     </nav>
 
     <script defer src="i18n/translations.js"></script>
     <script defer src="i18n/i18n.js"></script>
     <script defer src="scripts/theme.js"></script>
+    <script defer src="scripts/shader-bg.js"></script>
     <script defer src="scripts/avatar-3d.js"></script>
     <script defer src="scripts/script.js"></script>
     <script defer src="scripts/cursor.js"></script>

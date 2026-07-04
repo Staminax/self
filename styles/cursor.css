@@ -51,6 +51,7 @@
     height: 100vh;
     pointer-events: none;
     z-index: 9998;
+    background: transparent;
     transition: opacity 0.2s ease;
 }
 
@@ -58,8 +59,8 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 21px;
-    height: 21px;
+    width: 23px;
+    height: 23px;
     border-radius: 50%;
     background: var(--cursor-trail);
     box-shadow:
