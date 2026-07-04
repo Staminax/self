@@ -185,19 +185,28 @@
 
     .timeline-period {
         text-align: left;
-        padding: 0 0 0.5rem 0;
+        padding: 1rem 1rem 0.5rem;
         min-width: 0;
+        background: var(--glass-tint);
+        border: 1px solid var(--glass-border);
+        border-bottom: none;
+        border-radius: 16px 16px 0 0;
+        backdrop-filter: blur(10px) saturate(130%);
+        -webkit-backdrop-filter: blur(10px) saturate(130%);
     }
 
     .timeline-card {
         flex-direction: column;
-        padding: 1rem;
+        padding: 0.5rem 1rem 1rem;
         gap: 1rem;
+        border-radius: 0 0 16px 16px;
+        border-top: none;
     }
 
     .timeline-logo-link {
         width: 48px;
         height: 48px;
+        align-self: center;
     }
 
     .company-name {
@@ -222,7 +231,11 @@
         width: 95%;
     }
 
+    .timeline-period {
+        padding: 0.75rem 0.75rem 0.4rem;
+    }
+
     .timeline-card {
-        padding: 0.75rem;
+        padding: 0.4rem 0.75rem 0.75rem;
     }
 }
