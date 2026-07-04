@@ -793,9 +793,6 @@ function animate(timestamp) {
     requestAnimationFrame(animate);
 }
 
-resizeCanvas();
-requestRegeneration(0);
-
 window.addEventListener('resize', () => {
     resizeCanvas();
     lastRegeneratedIndex = -1;
@@ -828,7 +825,11 @@ if (orbEls.length && !reducedMotion) {
     });
 }
 
-animate();
+function initBranches() {
+    resizeCanvas();
+    requestRegeneration(0);
+    animate();
+}
 
 function typeIntro(el, text, delay, speed) {
     setTimeout(() => {
@@ -853,9 +854,11 @@ function typeIntro(el, text, delay, speed) {
 if (reducedMotion) {
     document.getElementById('intro-overlay')?.classList.add('done');
     document.getElementById('home')?.classList.add('in-view');
+    initBranches();
 } else {
     typeIntro(document.querySelector('.intro-subtitle'), 'original does not mean', 200, 77);
     typeIntro(document.querySelector('.intro-name'), 'good.', 1800, 168);
+    setTimeout(initBranches, 3850);
     setTimeout(() => {
         document.getElementById('home')?.classList.add('in-view');
     }, 4150);
