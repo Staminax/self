@@ -9,7 +9,10 @@ function typewriterTitles(scope) {
             el._twInterval = null;
         }
 
-        const text = el.textContent;
+        const existingCaret = el.querySelector('.typewriter-caret');
+        if (existingCaret) existingCaret.remove();
+
+        const text = el.textContent.trim();
         if (!text || text.length === 0) return;
 
         el.textContent = '';

@@ -1,7 +1,7 @@
 const experiencesData = [
     {
         company: "BemAgro S.A",
-        logo: "assets/images/companies/bemagro.png",
+        logo: "assets/images/companies/bemagro.webp",
         url: "https://www.bemagro.com/",
         positionKey: "exp1Position",
         period: "Nov 2024 - Present",
@@ -11,7 +11,7 @@ const experiencesData = [
     },
     {
         company: "CompuSoftware",
-        logo: "assets/images/companies/cs.png",
+        logo: "assets/images/companies/cs.webp",
         url: "https://www.cscompusoftware.com.br/",
         positionKey: "exp2Position",
         period: "Oct 2022 - Nov 2024",
@@ -21,7 +21,7 @@ const experiencesData = [
     },
     {
         company: "FMX Soluções em Tecnologia",
-        logo: "assets/images/companies/fmx.png",
+        logo: "assets/images/companies/fmx.webp",
         url: "https://fmxsolucoes.com.br/",
         positionKey: "exp3Position",
         period: "May 2021 - Jul 2022",
@@ -31,7 +31,7 @@ const experiencesData = [
     },
     {
         company: "FMX Soluções em Tecnologia",
-        logo: "assets/images/companies/fmx.png",
+        logo: "assets/images/companies/fmx.webp",
         url: "https://fmxsolucoes.com.br/",
         positionKey: "exp4Position",
         period: "Sep 2018 - Apr 2021",

@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
             starsContainer.innerHTML = '';
             for (let i = 0; i < card.stars; i++) {
                 const star = document.createElement('img');
-                star.src = 'assets/images/star.png';
+                star.src = 'assets/images/star.webp';
                 star.alt = 'Star';
                 starsContainer.appendChild(star);
             }

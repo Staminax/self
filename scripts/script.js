@@ -854,7 +854,7 @@ function initBranches() {
     animate();
 }
 
-function typeIntro(el, text, delay, speed) {
+function typeIntro(el, text, delay, speed, keepCaret) {
     setTimeout(() => {
         if (!el) return;
         el.textContent = '';
@@ -869,6 +869,10 @@ function typeIntro(el, text, delay, speed) {
                 i++;
             } else {
                 clearInterval(interval);
+                if (!keepCaret) {
+                    caret.style.animation = 'none';
+                    caret.style.opacity = '0';
+                }
             }
         }, speed);
     }, delay);
@@ -879,8 +883,8 @@ if (reducedMotion) {
     document.getElementById('home')?.classList.add('in-view');
     initBranches();
 } else {
-    typeIntro(document.querySelector('.intro-subtitle'), 'original does not mean', 200, 77);
-    typeIntro(document.querySelector('.intro-name'), 'good.', 1800, 168);
+    typeIntro(document.querySelector('.intro-subtitle'), 'original does not mean', 200, 77, false);
+    typeIntro(document.querySelector('.intro-name'), 'good.', 1800, 168, true);
     setTimeout(initBranches, 3850);
     setTimeout(() => {
         document.getElementById('home')?.classList.add('in-view');
