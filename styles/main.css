@@ -820,9 +820,7 @@ h1 {
     display: inline-block;
     pointer-events: auto !important;
     z-index: 10001 !important;
-    text-decoration: underline;
     text-decoration-color: var(--text-primary);
-    text-underline-offset: 2px;
 }
 
 .cats-trigger:hover {
