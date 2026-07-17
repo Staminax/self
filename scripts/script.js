@@ -413,20 +413,6 @@ window.addEventListener('wheel', (e) => {
 }, { passive: false });
 
 window.addEventListener('keydown', (e) => {
-    if (e.ctrlKey && (e.key === '+' || e.key === '-' || e.key === '=' || e.key === '0')) {
-        e.preventDefault();
-    }
-}, { passive: false });
-
-window.addEventListener('wheel', (e) => {
-    if (e.ctrlKey) {
-        e.preventDefault();
-    }
-}, { passive: false });
-
-
-
-window.addEventListener('keydown', (e) => {
     if (window.innerWidth <= 768) return;
 
     if (e.key === 'ArrowDown') {

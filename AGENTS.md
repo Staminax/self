@@ -13,12 +13,12 @@ Static personal portfolio for Gustavo B. Vanilla HTML/CSS/JS — **no framework,
 
 CSS is split across 6 files loaded in order in `index.html` `<head>`:
 
-1. `styles/main.css` — base layout, glass cards, typography, language switcher, cat card modal
+1. `styles/main.css` — base layout, glass cards, typography, language switcher, cat card modal, user-select text overrides
 2. `styles/cursor.css` — custom cursor elements (dot, eye, trail canvas); mobile hide rules
 3. `styles/theme-toggle.css` — theme toggle button
 4. `styles/navigation.css` — scroll-up button
 5. `styles/experience.css` — timeline (career-chapters card layout)
-6. `styles/boss.css` — **the aesthetic pass**: atmosphere (orbs, vignette, grain), cinematic intro, hero intro animation, frosted glass upgrade, section progress dots, section flash, stacks hover descriptions, typewriter caret, light-theme orb overrides, accessibility (focus-visible), card 3D tilt smoothing. Loads last so it overrides all prior rules.
+6. `styles/boss.css` — **the aesthetic pass**: atmosphere (vignette, grain), cinematic intro, hero intro animation + content cascade (tagline/socials stagger), scroll-arrow bob, frosted glass upgrade, section progress dots, section flash, stacks hover descriptions, typewriter caret, Didact Gothic chrome (h2/dot labels), accessibility (focus-visible), card 3D tilt smoothing, touch sticky-hover resets (`@media (hover: none)`), short-viewport rules (`@media (max-height: 500px)`). Loads last so it overrides all prior rules.
 
 **Adding CSS = add a `<link>` in `index.html` `<head>` after the existing ones.** `boss.css` must stay last.
 
@@ -26,13 +26,13 @@ CSS is split across 6 files loaded in order in `index.html` `<head>`:
 
 Defined in `:root` (dark theme) and `[data-theme="light"]` in `main.css` + `boss.css`:
 
-- `--accent-1: #ffffff`, `--accent-2: #a0a0a0`, `--accent-3: #ff3b3b` — monochrome + red hint palette
+- `--accent-1: #ffffff`, `--accent-2: #a0a0a0`, `--accent-3: #ff3b3b` — monochrome + red hint palette (`--accent-3` becomes `#c92020` in light theme; dots/numerals use the var)
 - `--accent-grad` — silver gradient for hero name, section underlines, active lang button, job titles
 - `--accent-glow: rgba(255, 59, 59, 0.22)` — red glow for hover effects (subtle)
 - `--glass-tint` — glass card background tint (varies by theme)
 - `--branch-base` / `--branch-hover` — branch canvas colors (read by JS at draw time)
 
-Light theme inverts silver to dark grey, dims red glow and orb opacity, uses darker orb colors so they're visible on light backgrounds.
+Light theme inverts silver to dark grey and dims the red glow.
 
 ## Script architecture — globals + load order
 
@@ -44,7 +44,7 @@ Load order:
 3. `scripts/theme.js` — theme toggle, persists to `localStorage`
 4. `scripts/avatar-3d.js` — hides cursor dot/trail on avatar hover (tilt removed)
 5. `scripts/script.js` — **the main engine**: branch canvas, sacred geometry seekers, atmosphere, cursor parallax, cinematic intro, section dots, scroll snap
-6. `scripts/cursor.js` — custom cursor trail (smooth tapered ribbon on canvas), red eye on UI hover, mini-branch cursor-branches canvas
+6. `scripts/cursor.js` — custom cursor dot positioning + UI hover state (`.hovered`)
 7. `scripts/cat-cards.js` — defines `catCardsData` (31 cards, inline)
 8. `scripts/modal.js` — cat deck modal logic
 9. `scripts/card-3d.js` — cat card 3D tilt (rAF-throttled, cached rect)
@@ -71,10 +71,9 @@ The `#choreographer` canvas is the visual centerpiece — a recursive branching 
 
 ## The cursor system (`scripts/cursor.js`)
 
-- **`#cursor-dot`**: 21px circle at the tip, glows white (red on UI hover via `.hovered` class).
-- **`#cursor-trail` canvas**: draws a **smooth tapered ribbon** using a filled polygon (not per-segment strokes). Builds a smoothed centerline via midpoint quadratic sampling, computes a tapered outline, fills with a linear gradient (transparent tail → visible tip). No `shadowBlur` (was causing the "dots" look).
-- **`#cursor-eye`**: 48px red glowing circle with mini-branch canvas inside. Appears on UI hover (`.active` class). Separate from the trail.
-- `card-3d.js` and `avatar-3d.js` hide the dot + trail canvas on hover (set opacity to '0', restore on leave).
+- **`#cursor-dot`**: 23px circle at the tip, glows white (red on UI hover via `.hovered` class).
+- **`#cursor-trail` canvas**: exists in the DOM but is hidden (`display: none`) — the trail was removed; the dot is the cursor.
+- `card-3d.js` and `avatar-3d.js` hide the dot on hover (set opacity to '0', restore on leave).
 - Mobile (≤768px) disables all custom cursor elements.
 
 ## Cinematic intro
@@ -118,13 +117,13 @@ The cat card modal (`#cat-modal`, `scripts/modal.js` + `scripts/card-3d.js`) ope
 
 ## Atmosphere system (`styles/boss.css`)
 
-Three fixed layers behind all content:
+Fixed layers around all content:
 
-- **`.atmosphere`** (z-index 0): 3 drifting + rotating aurora orbs (white, silver, red). Each orb has an off-center gradient (so rotation is visible) + independent drift keyframes. Red orb has a pulsing opacity (`redPulse`). Mouse parallax via `translate` property.
+- **`#shader-bg`** (z-index 100000 during intro, then 0 via `.behind`): WebGL "Living Veins" shader (`scripts/shader-bg.js`), domain-warped fbm, cursor clearing/glow, DPR capped at 1.5.
 - **`.vignette`** (z-index 500): radial gradient darkening screen edges.
-- **`.grain`** (z-index 501): animated SVG noise texture, low opacity, `mix-blend-mode: overlay`.
+- **`.grain`** (z-index 501): animated SVG noise texture (inset -25%), low opacity.
 
-All `pointer-events: none`, `aria-hidden="true"`. Reduced-motion disables orb/grain animations.
+All `pointer-events: none`, `aria-hidden="true"`. Reduced-motion disables grain animation.
 
 ## Deploy
 

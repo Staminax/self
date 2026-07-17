@@ -148,7 +148,7 @@
     function getScale() { return window.innerWidth <= 768 ? 0.5 : 1.0; }
 
     function resize() {
-        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
         const scale = getScale();
         canvas.width = Math.floor(window.innerWidth * dpr * scale);
         canvas.height = Math.floor(window.innerHeight * dpr * scale);
@@ -161,7 +161,7 @@
     window.addEventListener('resize', resize);
 
     window.addEventListener('mousemove', (e) => {
-        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
         const scale = getScale();
         const nx = e.clientX * dpr * scale;
         const ny = canvas.height - e.clientY * dpr * scale;

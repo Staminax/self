@@ -10,6 +10,7 @@
 }
 
 [data-theme="light"] {
+    --accent-3: #c92020;
     --accent-grad: linear-gradient(135deg, #2a2a2a, #606060);
     --accent-glow: rgba(255, 59, 59, 0.18);
     --glass-tint: rgba(255, 255, 255, 0.25);
@@ -49,7 +50,7 @@
 
 .grain {
     position: fixed;
-    inset: -50%;
+    inset: -25%;
     z-index: 501;
     pointer-events: none;
     opacity: 0.035;
@@ -122,16 +123,20 @@
 
 /* ===== Frosted glass upgrade ===== */
 .glass-card::before {
-    backdrop-filter: blur(14px) saturate(135%) brightness(1.02);
-    -webkit-backdrop-filter: blur(14px) saturate(135%) brightness(1.02);
+    backdrop-filter: blur(10px) saturate(135%) brightness(1.02);
+    -webkit-backdrop-filter: blur(10px) saturate(135%) brightness(1.02);
     background: var(--glass-tint);
 }
 
+/* ponytail: no backdrop blur on skill tags — imperceptible at 20px tall, ~10 layers saved */
 .skill-tag::before,
+.social-btn::before {
+    background: var(--glass-tint);
+}
+
 .social-btn::before {
     backdrop-filter: blur(10px) saturate(130%) brightness(1.02);
     -webkit-backdrop-filter: blur(10px) saturate(130%) brightness(1.02);
-    background: var(--glass-tint);
 }
 
 /* ===== Hero one-time intro (sections appear without stagger animation) ===== */
@@ -150,6 +155,15 @@
 @keyframes revealCard {
     from { opacity: 0; transform: translateY(40px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+/* Hero content cascade after card reveal */
+#home.in-view .tagline {
+    animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.45s backwards;
+}
+
+#home.in-view .social-links {
+    animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.6s backwards;
 }
 
 /* ===== Accent hovers (subtle red glow) ===== */
@@ -175,7 +189,8 @@
 }
 
 .skill-tag:hover {
-    box-shadow: 0 6px 6px var(--glass-shadow), 0 0 20px var(--accent-glow);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 10px var(--glass-shadow), 0 0 20px var(--accent-glow);
 }
 
 /* ===== Active language button: silver gradient + red glow ===== */
@@ -229,8 +244,6 @@
         grid-template-columns: repeat(2, 1fr);
         gap: 1rem;
     }
-
-    .stack-item { min-width: auto; }
 }
 
 /* ===== Section title font consistency ===== */
@@ -244,6 +257,13 @@
     -webkit-text-fill-color: var(--text-muted);
     background: none;
     margin-bottom: -0.5rem;
+}
+
+/* Chrome voice: uppercase labels + numerals in Didact Gothic (already loaded for cat cards) */
+.glass-card h2,
+.dot-label,
+.dot-numeral {
+    font-family: 'Didact Gothic', sans-serif;
 }
 
 /* ===== Typewriter caret ===== */
@@ -416,7 +436,7 @@
 
 .section-dot.active::before {
     background: rgba(255, 255, 255, 0.85);
-    border: 1px solid #ff3b3b;
+    border: 1px solid var(--accent-3);
     box-shadow: 0 0 8px rgba(255, 59, 59, 0.6), 0 0 16px rgba(255, 59, 59, 0.3);
     animation: dotPulse 2s ease-in-out infinite;
 }
@@ -425,7 +445,7 @@
     order: 3;
     font-size: 0.9rem;
     font-weight: 700;
-    color: #ff3b3b;
+    color: var(--accent-3);
     letter-spacing: 0.05em;
     opacity: 0;
     transform: scale(0.5);
@@ -454,12 +474,12 @@
 
 [data-theme="light"] .section-dot.active::before {
     background: rgba(40, 40, 40, 0.85);
-    border: 1px solid #c92020;
+    border: 1px solid var(--accent-3);
     box-shadow: 0 0 8px rgba(200, 30, 30, 0.4), 0 0 16px rgba(200, 30, 30, 0.2);
 }
 
 [data-theme="light"] .dot-numeral {
-    color: #c92020;
+    color: var(--accent-3);
     text-shadow: 0 0 10px rgba(200, 30, 30, 0.4);
 }
 
@@ -495,22 +515,15 @@
 }
 
 #section-flash.active {
-    opacity: 0.05;
+    opacity: 0.08;
 }
 
 /* ===== Stacks description ===== */
 .stack-desc {
     font-size: 0.75rem;
     color: var(--text-muted);
-    opacity: 0;
-    max-height: 0;
-    overflow: hidden;
-    transition: opacity 0.3s ease, max-height 0.3s ease;
-}
-
-.stack-item:hover .stack-desc {
-    opacity: 1;
-    max-height: 2rem;
+    text-align: center;
+    line-height: 1.4;
 }
 
 /* ===== Card 3D tilt smoothing ===== */
@@ -524,11 +537,106 @@
     outline-offset: 2px;
 }
 
+/* ===== Touch: no sticky hover states ===== */
+@media (hover: none) {
+    .social-btn:hover {
+        transform: none;
+        box-shadow: 0 6px 6px var(--glass-shadow), 0 0 20px var(--glass-shadow);
+    }
+
+    .stack-item:hover {
+        transform: none;
+        box-shadow: 0 6px 6px var(--glass-shadow), 0 0 20px var(--glass-shadow);
+    }
+
+    .stack-item:hover .stack-icon {
+        transform: none;
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+    }
+
+    .skill-tag:hover {
+        transform: none;
+        box-shadow: 0 6px 6px var(--glass-shadow), 0 0 20px var(--glass-shadow);
+    }
+
+    .profile-avatar:hover {
+        transform: none;
+        box-shadow: 0 4px 20px var(--glass-shadow-lg);
+        filter: none;
+    }
+
+    .timeline-card:hover {
+        transform: none;
+        border-color: var(--glass-border);
+        box-shadow: 0 4px 6px var(--glass-shadow);
+    }
+
+    .theme-toggle:hover {
+        transform: none;
+    }
+
+    .modal-nav:hover,
+    .modal-close:hover {
+        transform: none;
+    }
+}
+
+/* ===== Short viewports (landscape phones) ===== */
+@media (max-height: 500px) {
+    .snap-section {
+        align-items: flex-start;
+        overflow-y: auto;
+    }
+
+    .glass-card {
+        padding: 1.25rem 1.5rem;
+        margin: 1rem 0;
+    }
+
+    .profile-avatar {
+        width: 64px;
+        height: 64px;
+        margin-bottom: 0.75rem;
+    }
+
+    #home h1 {
+        font-size: 1.75rem;
+    }
+
+    .tagline {
+        font-size: 0.95rem;
+    }
+
+    .social-links {
+        margin-top: 1rem;
+    }
+
+    .about-card,
+    .stacks-card {
+        gap: 0.75rem;
+    }
+
+    .stacks-grid {
+        gap: 1rem;
+        margin-top: 0.5rem;
+    }
+
+    .scroll-btn {
+        display: none;
+    }
+
+    .intro-name {
+        font-size: 2.5rem;
+    }
+}
+
 /* ===== Reduced motion ===== */
 @media (prefers-reduced-motion: reduce) {
     .grain,
     #home h1,
-    .typewriter-caret {
+    .typewriter-caret,
+    #home.in-view .tagline,
+    #home.in-view .social-links {
         animation: none;
     }
 
